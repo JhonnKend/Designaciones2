@@ -35,7 +35,7 @@ mix
    'resources/vendor/dataTables/js/dataTables.bootstrap.min.js',
    'resources/vendor/dataTables/js/dataTables.bootstrap4.min.js',
    
-   //'resources/vendor/nucleo/js/jquery-scrollLock.min.js',
+   //'resources/vendor/nucleo/jsads/jquery-scrollLock.min.js',
 ],'public/js/vendor.js')
 
 .copy('resources/vendor/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')

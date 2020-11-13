@@ -172,6 +172,21 @@ $(function(){
         	}
         })
     });
+    $(document).on('click','.load_students_view',function(e){
+        console.log('asdsadsad')
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:$(this).attr('href'),
+        	data:{id:$(this).attr('value'),_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $(".aqui_cargar").html(data)
+                return false;
+        	},
+        	error:function(data){
+        	}
+        })
+    });
     $(document).on('click','.button_back',function(e){
         e.preventDefault(e)
         $.ajax({
@@ -215,6 +230,7 @@ $(function(){
         })
     });
     $(document).on('submit','.save_date',function(e){
+        console.log('asdsadsasdsa 78')
         var formData = new FormData($(this)[0]);
         frutas = []
         $('.name_form').each(function(){
@@ -233,6 +249,31 @@ $(function(){
             processData: false,
             success:function(data){                
                 $("#global_content").html(data)                                   
+            },
+            error:function(data){
+                function_error(data)
+            }
+        })
+    })
+    $(document).on('submit','.save_dates',function(e){
+        var formData = new FormData($(this)[0]);
+        frutas = []
+        $('.name_form').each(function(){
+            aux = $(this).attr("name")
+            frutas.push(aux)
+        })
+        $.ajaxSetup({
+            header:$('meta[name="_token"]').attr('content')
+        })
+        e.preventDefault(e)
+        $.ajax({
+            type:$(this).attr('method'),
+            url:$(this).attr('action'),
+            data:formData,
+            contentType: false,
+            processData: false,
+            success:function(data){                
+                $(".aqui_cargar").html(data)                                   
             },
             error:function(data){
                 function_error(data)

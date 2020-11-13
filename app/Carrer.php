@@ -76,4 +76,27 @@ class Carrer extends Model
                 'career.id',
             ]);
     }
+    protected static function get_university_my_careers($id){
+        return \DB::table('career')
+        ->join('faculties','faculties.id','=','career.faculty_id')
+        ->join('univeridads','univeridads.id','=','faculties.id_university')
+        ->where('univeridads.id','=',$id)
+        ->get([
+            'career.id',
+            'career.name_career',
+            'career.created_at',
+            'faculties.name_faculty',
+        ]);
+    }
+    protected static function show_careers($id){
+        return \DB::table('faculties')  
+        ->join('career','career.faculty_id','=','faculties.id')  
+        ->where('faculties.id_university','=',$id)        
+        ->get([
+            'faculties.id as id_facultad',
+            'career.name_career',
+            'career.id',
+            'career.id as id_career',
+        ]);
+    }
 }

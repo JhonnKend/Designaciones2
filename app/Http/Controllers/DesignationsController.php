@@ -215,9 +215,11 @@ class DesignationsController extends Controller
     }
     //Function for Initation designate for studens
     public function start_designate(Request $request){
+        //datos estudiante
         $student = Designacion::student_view($request->id);
+        $students = Designacion::student_view_c_f_u($request->id);
         $quotas = Designacion::student_view_quotas($student->level_ac);
-        return view('designations.internship_draw.create',compact('student','quotas'))->with('message','');
+        return view('designations.internship_draw.create',compact('student','quotas','students'))->with('message','');
     }
     //funcion para sorteo de internados para universitarios
     public function quota_draw(Request $request){  
@@ -256,11 +258,11 @@ class DesignationsController extends Controller
     public function start_designation_insti(Request $request){
         //return $request->all();
         $student = Designacion::student_view_insti($request->id);
-        //$quotas = Designacion::student_view_quotas_insti($student->level_ac);
+        //$quotas = Designacion::student_view_quotas_insti($stusdent->level_ac);
         return view('designations.internship_draw.create_isnti',compact('student','quotas'));
     }
     public function quota_draw_insti(Request $request){
-        $student_dates = Designacion::view_designation_student_dates($request->id_student);      
+        $student_dates = Designacion::view_designation_student_dates_insti($request->id_student);      
         $student1 =  Student::find($request->id_student);        
         $numero = Designacion::quota_select_one_insti($student1->level_ac,$request->periodo);
         $internship_save =  Quotas::find($numero->id);

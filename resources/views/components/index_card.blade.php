@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div> <hr>
-        <div class="table-responsive">
+        <div class="card-body table-responsive">
             {!! $bodycard ?? '' !!}
         </div>
     </div>

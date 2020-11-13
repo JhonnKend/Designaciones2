@@ -62,4 +62,17 @@ class Faculty extends Model
             ->where('faculties.id_university','=',$id)
             ->get();
     }
+    //PAra devolver las Facultades de una Universidad
+    protected static function view_my_faculties($id){
+        return \DB::table('faculties')
+        ->join('univeridads','univeridads.id','=','faculties.id_university')
+        ->where('faculties.id_university','=',$id)
+        ->get([
+            'faculties.id',
+            'faculties.name_faculty',
+            'faculties.description',
+            'faculties.created_at',
+            'univeridads.name_university',
+        ]);
+    }
 }

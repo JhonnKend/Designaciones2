@@ -43,21 +43,21 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="name_student">CARRERA</label>
-                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante" value="{{ $student->name }} {{ $student->ap_pat }} {{ $student->ap_mat }}" disabled>
+                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante"  value="{{ $students[0]->name_career }}" disabled>
                             <small class="text-danger" id=""></small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="name_student">FACULTAD</label>
-                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante" value="{{ $student->ci }} {{ $student->exp }}" disabled>
+                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante" value="{{ $students[0]->name_faculty }} " disabled>
                             <small class="text-danger" id=""></small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="name_student">UNIVERSIDAD</label>
-                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante" value="{{ $student->name }} {{ $student->ap_pat }} {{ $student->ap_mat }}" disabled>
+                            <input type="text" class="change_select form-control name_form" name="name_student" placeholder="Ingrese Nombres del Estudiante" value="{{ $students[0]->name_university }}" disabled>
                             <small class="text-danger" id=""></small>
                         </div>
                     </div>                    

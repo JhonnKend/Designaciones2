@@ -11,6 +11,8 @@ use App\Carrer;
 use App\Faculty;
 use App\InternshipTipes;
 use App\Rules\ContrasenaFuerte;
+use App\Student;
+use App\User;
 
 class UniversityController extends Controller
 {
@@ -45,7 +47,15 @@ class UniversityController extends Controller
 		$univercity->id_municipality = $request->id_municipality;
         $univercity->user_create = \Auth::user()->id;
         $univercity->save();
-        return redirect()->route('create_univesities', $univercity->id)
+        $ultimo = \DB::table('univeridads')->where('name_university','=',request ('name_university'))->get(['univeridads.id'])->first();
+        $usuario = new User();
+        $usuario->name = request ('name_university');
+        $usuario->email = request ('email_uni');
+        $usuario->type_user = 2;
+        $usuario->id_universidad = $ultimo->id;
+        $usuario->password = bcrypt('password');
+        $usuario->save();
+        return redirect()->route('create_universities', $univercity->id)
             ->with('info', 'Rol registrado con  éxito');
     }
     public function edit_universities(Request $request){
@@ -254,5 +264,97 @@ class UniversityController extends Controller
     }
     public function charge_faculties(Request $request){
         return Faculty::find_faculties($request->id);
+    }
+    //Funcion para ver el perfil de una iniversidad
+    public function view_perfil(){
+        $perfil_university = Univeridad::get_dates_perfil(\Auth::user()->id_universidad);
+        return view('universities.perfil.view_perfil',compact('perfil_university'));
+    }
+    public function index_my_faculties(){
+        $faculties = Faculty::view_my_faculties(\Auth::user()->id_universidad);
+        return view('universities.perfil.index_my_faculties',compact('faculties'));
+    }
+    public function create_my_faculty(){
+        $perfil_university = Univeridad::get_dates_perfil(\Auth::user()->id_universidad);
+        return view('universities.perfil.create_my_faculties',compact('perfil_university'));
+    }
+    public function store_my_faculties(Request $request){
+        $validator = $request->validate([
+            'id_university' => 'numeric',
+            'name_faculty' => 'required',            
+        ],[
+            'name_faculty.required' => 'El Nombre de la Facultad es Requerido',
+			'name_faculty.unique' => 'El Nombre de la Facultad ya está en uso',
+            'id_university.numeric' => 'Seleccione una Universidad',            
+        ]);
+        //return $validator;
+        $faculty = new Faculty();
+        $faculty->name_faculty = request ('name_faculty');
+        $faculty->description = request ('description');
+		$faculty->id_university = $request->id_university;
+        $faculty->user_create = \Auth::user()->id_universidad;
+        $faculty->save();
+        return redirect()->route('create_my_faculty', $faculty->id)
+            ->with('info', [
+                'status' => 'success',
+                'content' => 'Facultad Registrada con  éxito'
+                
+            ]);
+    }
+    public function index_my_careers(){
+        $university_my_careers = Carrer::get_university_my_careers(\Auth::user()->id_universidad);
+        return view('universities.perfil.view_my_careers',compact('university_my_careers'));
+    }
+    public function create_my_careers(){
+        $types_internations = InternshipTipes::get_type_int();
+        $perfil_university = Univeridad::get_dates_perfil(\Auth::user()->id_universidad);
+        $faculties = Faculty::view_my_faculties(\Auth::user()->id_universidad);
+        return view('universities.perfil.create_careers',compact('faculties','types_internations','perfil_university'));
+    }
+    public function store_my_careers(Request $request){
+        $request->validate([
+            'id_faculty' => 'numeric',
+            'type_in' => 'numeric',
+            'name_career' => 'required',            
+        ],[
+            'name_career.required' => 'El Nombre de la Facultad es Requerido',
+			'name_career.unique' => 'El Nombre de la Facultad ya está en uso',
+			'type_in.numeric' => 'Seleccione un Tipo de Internado',
+			'id_province.numeric' => 'Seleccione una Provincia',
+            'id_department.numeric' => 'Seleccione un Departamento', 
+            'id_university.numeric' => 'Seleccione una Universidad',
+            'id_faculty.numeric' => 'Seleccione una Facultad',        
+        ]);
+        $career = new Carrer();
+        $career->name_career = request ('name_career');
+        $career->description = request ('description');
+        $career->type_internation = request ('type_in');
+		$career->faculty_id = $request->id_faculty;
+        $career->user_create = \Auth::user()->id;
+        $career->save();
+        return redirect()->route('create_careers', $career->id)
+            ->with('info', 'Carrera Registrada con  éxito');
+    }
+    public function view_students_university(Request $request){
+        if(\Auth::user()->type_user == 2){
+            $careers = Carrer::show_careers(\Auth::user()->id_universidad);
+            return view('universities.students.show',compact('careers'));
+        }
+    }
+    public function search_students(Request $request){
+        $studiantes = Student::studiantes($request->id_carrera);
+        return view('universities.students.load_students',compact('studiantes'));
+    }
+    public function register_new_student(){
+        $departments = Departamento::all();
+        $my_uni = Univeridad::find(\Auth::user()->id_universidad);
+        $my_faculties = \DB::table('faculties')
+            ->where('faculties.id_university','=',\Auth::user()->id_universidad)
+            ->get([
+                'faculties.id AS id_faculty',
+                'name_faculty',
+           
+            ]);
+        return view('universities.students.form_students_uni',compact('departments','my_uni','my_faculties'));
     }
 }

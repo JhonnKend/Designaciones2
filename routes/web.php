@@ -228,4 +228,25 @@ Route::middleware(['auth'])->group(function(){
     Route::get('generate_types_internships_pdf', 'QuotasController@generate_types_internships_pdf')->name('generate_types_internships_pdf');
     Route::get('generate_quotas_pdf', 'QuotasController@generate_quotas_pdf')->name('generate_quotas_pdf');
     Route::get('generate_designations_pdf', 'DesignationsController@generate_designations_pdf')->name('generate_designations_pdf');
+
+
+
+// Rutas para la Universidad
+    Route::get('university','UniversityController@view_perfil')->name('view_perfil')->middleware('permission:administrar_universidades');
+    Route::get('index_my_faculties','UniversityController@index_my_faculties')->name('index_my_faculties')->middleware('permission:administrar_universidades');
+    Route::get('index_my_careers','UniversityController@index_my_careers')->name('index_my_careers')->middleware('permission:administrar_universidades');
+    Route::get('create_my_faculty','UniversityController@create_my_faculty')->name('create_my_faculty')->middleware('permission:administrar_universidades');
+    
+    Route::post('store_my_faculties','UniversityController@store_my_faculties')->name('store_my_faculties')->middleware('permission:administrar_universidades');
+    Route::get('my_careers','UniversityController@index_my_careers')->name('index_my_careers')->middleware('permission:administrar_universidades');
+
+    Route::get('create_my_careers','UniversityController@create_my_careers')->name('create_my_careers')->middleware('permission:administrar_universidades');
+    Route::post('store_my_careers','UniversityController@store_my_careers')->name('store_my_careers')->middleware('permission:administrar_universidades');
+    Route::get('view_students_university','UniversityController@view_students_university')->name('view_students_university')->middleware('permission:administrar_universidades');
+    Route::post('search_students','UniversityController@search_students')->name('search_students')->middleware('permission:administrar_universidades');
+    
+    Route::get('register_new_student','UniversityController@register_new_student')->name('register_new_student')->middleware('permission:administrar_universidades');
+
+    
+    Route::post('store_students_uni','StudentController@store_students')->name('store_students_uni')->middleware('permission:administrar_universidades');
 });

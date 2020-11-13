@@ -137,6 +137,7 @@ class Designacion extends Model
                 'career.name_career',
                 'univeridads.name_university',
                 'q.name_estable_salud',
+                'municipalities.nombre_red',
                 'municipalities.name_municipality',
                 'internation_types.name_type'
 
@@ -158,6 +159,7 @@ class Designacion extends Model
                 'institutes.name_institute',
                 'q.name_estable_salud',
                 'municipalities.name_municipality',
+                'municipalities.nombre_red',
                 'internation_types.name_type'
 
             ])->first();
@@ -221,5 +223,13 @@ class Designacion extends Model
                 'univeridads.name_university',
                 'estable_saluds.name_estable_salud',
             ]);
+    }
+    protected static function student_view_c_f_u($id){
+        return \DB::table('student')
+            ->join('career','career.id','=','student.carrer_id')
+            ->join('faculties','faculties.id','=','career.faculty_id')
+            ->join('univeridads','univeridads.id','=','faculties.id_university')
+            ->where('student.id','=', $id)  
+            ->get();
     }
 }
