@@ -3,10 +3,11 @@
 <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
+          <i class="fa fas-hospital-o"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Designaciones</div>
+        <div class="sidebar-brand-text mx-3">DESIGNACIONES</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -25,7 +26,7 @@
         <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item load_url" href="{{ route('index_departments') }}">Departamentos</a>
-            <a class="collapse-item load_url" href="{{ route('index_provinces') }}">Privincias</a>
+            <a class="collapse-item load_url" href="{{ route('index_provinces') }}">Provincias</a>
             <a class="collapse-item load_url" href="{{ route('index_municipalities') }}">Municipios</a>
             <a class="collapse-item load_url" href="{{ route('index_communities') }}">Comunidades</a>
           </div>
@@ -102,6 +103,8 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item load_url" href="{{ route('index_internship_types') }}">Tipos de Internado</a>
             <a class="collapse-item load_url" href="{{ route('index_quotas') }}">Cupos</a>
+            <a class="collapse-item load_url" href="{{ route('index_gestion') }}">Gestion</a>
+            <a class="collapse-item load_url" href="{{ route('index_periods') }}">Periodos</a>
           </div>
         </div>
 	  </li>
@@ -115,6 +118,7 @@
         </a>
         <div id="collapse_designation" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item load_url" href="{{ route('index_enable_periods') }}">Fechas Registros</a>
             <a class="collapse-item load_url" href="{{ route('index_internship_draw') }}">Ver Designaciones</a>
             <a class="collapse-item load_url" href="{{ route('start_designation') }}">Sorteo Internados</a>
           </div>

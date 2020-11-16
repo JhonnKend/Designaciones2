@@ -7,7 +7,7 @@
     <form action="{{ route('search_students') }}" class="save_dates"  method="POST">
         @csrf  
     <div class="row">
-        <div class="col-md-4">            
+        <div class="col-md-3">            
             <div class="form-group">
                 <select name="id_carrera" id="" class="change_select form-control select2bs4 select2-danger name_form">
                     <option>Seleccione Carrera</option>
@@ -18,7 +18,29 @@
                 <small class="text-danger" id=""></small>
             </div>   
         </div>
-        <div class="col-md-8">
+        <div class="col-md-3">            
+            <div class="form-group">
+                <select name="id_carrera" id="" class="change_select form-control select2bs4 select2-danger name_form">
+                    <option>Seleccione Gestion</option>
+                    @foreach($careers as $r)
+                        <option value="{{ $r->id }}"> {{ $r->name_career }} </option>
+                    @endforeach
+                </select>
+                <small class="text-danger" id=""></small>
+            </div>   
+        </div>
+        <div class="col-md-3">            
+            <div class="form-group">
+                <select name="id_carrera" id="" class="change_select form-control select2bs4 select2-danger name_form">
+                    <option>Seleccione Periodo</option>
+                    @foreach($careers as $r)
+                        <option value="{{ $r->id }}"> {{ $r->name_career }} </option>
+                    @endforeach
+                </select>
+                <small class="text-danger" id=""></small>
+            </div>   
+        </div>
+        <div class="col-md-3">
             <button type="submit" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                 <i class="fas fa-search"></i>

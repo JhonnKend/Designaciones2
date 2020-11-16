@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Univeridad;
 use App\Instituto;
 use App\Carrer;
+use App\Cod_red;
 use App\Departamento;
 use App\Province;
 use App\Municipality;
@@ -65,7 +66,7 @@ class ConguracionController extends Controller
 		return view('config.provinces.index',compact('provinces'));
 	}
 	public function create_provinces(){
-		$departments = Departamento::paginate(20);
+		$departments = Departamento::paginate(20);		
 		return view('config.provinces.create',compact('departments'));
 	}
 	public function store_provinces(Request $request){
@@ -130,7 +131,8 @@ class ConguracionController extends Controller
 	}
 	public function create_municipalities(){
 		$departments = Departamento::get();
-		return view('config.municipalities.create',compact('departments'));
+		$cod_red = Cod_red::paginate(10);
+		return view('config.municipalities.create',compact('departments','cod_red'));
 	}
 	public function load_prov(Request $request){
 		return \DB::table('provinces')		
@@ -141,21 +143,23 @@ class ConguracionController extends Controller
 		//return $request->all();
 		$request->validate([
             'name_municipality' => 'required|unique:municipalities',
-            'cod_muni' => 'required|unique:municipalities',       
+			'cod_muni' => 'required|unique:municipalities',      
+			'id_cod_red' => 'numeric',       
         ],[
             'name_municipality.required' => 'El campo Nombre Municipio es requerido',
 			'name_municipality.unique' => 'El valor del campo Nombre Municipio ya está en uso',
 			'cod_muni.required' => 'El campo Codigo Municipio es requerido',
-            'cod_muni.unique' => 'El valor del campo Codigo Municipio ya está en uso'
+			'cod_muni.unique' => 'El valor del campo Codigo Municipio ya está en uso',
+			'id_cod_red.numeric' => 'Seleccione una Red'
 		]);	
 		$prov = Province::find($request->id_province);	
 		$municipality = new Municipality();
-		//return $municipality;
+		//return $municipality;nombre_red
         $municipality->name_municipality = request ('name_municipality');
 		$municipality->cod_muni = request ('cod_muni');
 		$municipality->id_province = $prov->id;
 		$municipality->cod_prov = $prov->cod_prov;
-		$municipality->cod_red = 1;
+		$municipality->cod_red = request ('id_cod_red');
         $municipality->user_create = \Auth::user()->id;
         $municipality->save();
         return redirect()->route('create_municipalities', $prov->id)
@@ -167,29 +171,31 @@ class ConguracionController extends Controller
 		return view('config.municipalities.show',compact('municipality'));
 	}
 	public function edit_municipalities(Request $request){
-		$municipality_edit = Municipality::find($request->id);
+		$municipality_edit = Municipality::find_muni($request->id);
 		$departments = Departamento::all();
-		$prov = Province::find($municipality_edit->id);
-		$province = \DB::table('provinces')
-			->where('provinces.id_department','=',$prov->id_department)
-        ->get();
-		return view('config.municipalities.edit',compact('municipality_edit','departments','province'));
+		$cod_red = Cod_red::all();
+		$province = \DB::table('provinces')->where('id_department','=',$municipality_edit[0]->id_departamento)->get();		
+		return view('config.municipalities.edit',compact('municipality_edit','departments','province','cod_red'));
 	}
 	public function update_municipalities(Request $request,Municipality $id){
 		//return $request->all();
 		$request->validate([
             'name_municipality' => 'required',
-            'cod_muni' => 'required',       
+			'cod_muni' => 'required',     
+			'id_cod_red' => 'numeric',     
         ],[
             'name_municipality.required' => 'El campo Nombre Municipio es requerido',
 			'cod_muni.required' => 'El campo Codigo Municipio es requerido',
+			'id_cod_red.numeric' => 'Seleccione una Red'
 		]);
 		$municipality =  Municipality::find($id->id);
         $municipality->name_municipality = $request->get('name_municipality');
 		$municipality->cod_muni = request ('cod_muni');
+
+		$municipality->cod_muni = request ('id_cod_red');
 		
 		$municipality->id_province = $request->id_province;
-		
+		$municipality->cod_red = request ('id_cod_red');
 		$municipality->cod_muni = $request->cod_muni;
 
 		$municipality->updated_at = date("Y-m-d H:i:s");

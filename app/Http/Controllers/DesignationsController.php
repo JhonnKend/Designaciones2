@@ -8,6 +8,8 @@ use App\Quotas;
 use App\Departamento;
 use App\Designacion;
 use App\Student;
+use App\Gestion;
+use App\Periods;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DesignationsExport;
 use Symfony\Component\Console\Descriptor\Descriptor;
@@ -287,5 +289,28 @@ class DesignationsController extends Controller
         //$designate_date = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->designation_date));
         //$dat2 = $designate_date->formatLocalized(' %d de %B del %Y');
         return \PDF::loadView('reports.internships',compact('internships'))->setPaper('letter', 'portrait')->stream('Estudantes Registrados.pdf');
+    }
+
+    public function index_gestion(){
+        $gestion = Gestion::get();
+        return view('designations.gestion.index',compact('gestion'));
+    }
+    public function index_periodos(){
+        $periodos = Periods::get();
+        return view('designations.period.index',compact('periodos'));
+    }
+    public function index_enable_periods(){
+        $periodos_enabled = \DB::table('enable_periods')
+            ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+            ->join('periods','periods.id','=','enable_periods.id_period')
+            ->get([
+                'enable_periods.id','enable_periods.date_start','enable_periods.date_end','enable_periods.status_',
+                'gestion.gestion',
+                'periods.period',
+            ]);
+        return view('designations.dates_enabled.index',compact('periodos_enabled'));
+    }
+    public function create_enable_periods(){
+        return view('designations.dates_enabled.create');
     }
 }

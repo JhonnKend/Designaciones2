@@ -28,7 +28,7 @@ class Province extends Model
             'departamentos.name_department',
         ]);
     }
-    protected function show_province($id){
+    protected static function show_province($id){
         return $show_provinces = \DB::table('provinces')
         ->join('departamentos','departamentos.id','=','provinces.id_department')
         ->where('provinces.id','=',$id)
