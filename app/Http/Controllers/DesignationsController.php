@@ -7,6 +7,7 @@ use App\InternshipTipes;
 use App\Quotas;
 use App\Departamento;
 use App\Designacion;
+use App\Enable_periods;
 use App\Student;
 use App\Gestion;
 use App\Periods;
@@ -311,6 +312,45 @@ class DesignationsController extends Controller
         return view('designations.dates_enabled.index',compact('periodos_enabled'));
     }
     public function create_enable_periods(){
-        return view('designations.dates_enabled.create');
+        $gestion = Gestion::get();
+        $periodos = Periods::get();
+        return view('designations.dates_enabled.create',compact('gestion','periodos'));
+    }
+    public function store_date_enabled(Request $request){
+        $status = 'success';
+        $conent = 'Se habilito el Registro de Estudiantes desde '. $request->fecha_inicio.' a '.$request->fecha_fin.' Correctamente';
+        $request->validate([
+            'id_gestion' => 'numeric',
+            'id_periodo' => 'numeric',
+            'fecha_fin' => 'date|required',
+            'fecha_inicio' => 'date|required',
+        ],[
+            'id_gestion.numeric' => 'Debe Seleccionar una Gestion',
+            'id_periodo.numeric' => 'Debe Seleccionar un Periodo',
+            'fecha_fin.date' => 'El formato de Fecha Fin es Incorrecto',
+            'fecha_inicio.date' => 'El formato de Fecha Inicio es Incorrecto',
+        ]);
+        $date_enabled = new Enable_periods();
+        $date_enabled->date_end = request ('fecha_fin');
+        $date_enabled->date_start = request ('fecha_inicio');
+        $date_enabled->id_gestion = request ('id_gestion');
+        $date_enabled->id_period = request ('id_periodo');
+        $date_enabled->status_ = 1;
+        $date_enabled->user_create = \Auth::user()->id;
+        $date_enabled->user_edit = \Auth::user()->id;
+        $date_enabled->save();
+        $periodos_enabled = \DB::table('enable_periods')
+            ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+            ->join('periods','periods.id','=','enable_periods.id_period')
+            ->get([
+                'enable_periods.id','enable_periods.date_start','enable_periods.date_end','enable_periods.status_',
+                'gestion.gestion',
+                'periods.period',
+            ]);
+        return view('designations.dates_enabled.index',compact('periodos_enabled'))
+            ->with('info', [
+                'status' => $status,
+                'content' => $conent
+            ]);
     }
 }

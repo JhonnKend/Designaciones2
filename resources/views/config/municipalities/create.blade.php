@@ -31,7 +31,7 @@
 				</div>
 				<div class="form-group">
 					<label for="cod_depa">CODIGO MUNICIPIO</label>
-						<small class="text-red" id=""></small>
+					<small class="text-red" id=""></small>
 					<input type="text" class="form-control name_form" name="cod_muni" placeholder="Ingrese Codigo del Municipio">
 				</div>
 			</div>

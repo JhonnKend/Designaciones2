@@ -30,10 +30,11 @@ class CreateStudentTable extends Migration
             $table->unsignedBigInteger('carrer_id');
             $table->unsignedBigInteger('level_ac');
             $table->unsignedBigInteger('caso_esp');
+            $table->unsignedBigInteger('id_date_enabled');
+            $table->foreign('id_date_enabled')->references('id')->on('enable_periods');
             $table->foreign('insti_id')->references('id')->on('careers_institute');
             $table->foreign('carrer_id')->references('id')->on('career');
-            $table->foreign('caso_esp')->references('id')->on('casos');
-            
+            $table->foreign('caso_esp')->references('id')->on('casos');            
             $table->unsignedBigInteger('user_create');
             $table->foreign('user_create')->references('id')->on('users');
             $table->timestamps();

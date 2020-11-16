@@ -131,7 +131,7 @@ class ConguracionController extends Controller
 	}
 	public function create_municipalities(){
 		$departments = Departamento::get();
-		$cod_red = Cod_red::paginate(10);
+		$cod_red = Cod_red::paginate(20);
 		return view('config.municipalities.create',compact('departments','cod_red'));
 	}
 	public function load_prov(Request $request){
@@ -178,7 +178,6 @@ class ConguracionController extends Controller
 		return view('config.municipalities.edit',compact('municipality_edit','departments','province','cod_red'));
 	}
 	public function update_municipalities(Request $request,Municipality $id){
-		//return $request->all();
 		$request->validate([
             'name_municipality' => 'required',
 			'cod_muni' => 'required',     

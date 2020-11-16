@@ -17,7 +17,7 @@
                                         @forelse($departments as $d)
                                             <option  value="{{ $d->id }}">{{ $d->name_department }}</option>
                                         @empty
-                                        <   option value="">No hay Departamentos Registrados</option>
+                                        <option value="">No hay Departamentos Registrados</option>
                                         @endforelse
                                     </select>
                                     <small class="text-danger" id=""></small>

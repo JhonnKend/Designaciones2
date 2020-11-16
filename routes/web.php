@@ -161,9 +161,10 @@ Route::middleware(['auth'])->group(function(){
     Route::post('edit_periods','DesignationsController@edit_periodos')->name('edit_periods')->middleware('permission:edit_periods');
     Route::post('update_periods/{id}','DesignationsController@update_periodos')->name('update_periods')->middleware('permission:update_periods');
 
-    //Rutas para habilitar fechas y periodos para registro de estudiantes.
+    //Rutas para habilitar fechas y periodos para registro de estudiantes. 
     Route::get('index_enable_periods','DesignationsController@index_enable_periods')->name('index_enable_periods')->middleware('permission:index_enable_periods');
     Route::get('create_enable_periods','DesignationsController@create_enable_periods')->name('create_enable_periods')->middleware('permission:create_enable_periods');
+    Route::post('store_date_enabled','DesignationsController@store_date_enabled')->name('store_date_enabled')->middleware('permission:store_date_enabled');
 
     //Rutas para tipos de Internados.
     Route::get('internship_types','DesignationsController@index_internship_types')->name('index_internship_types')->middleware('permission:index_internship_types');
@@ -270,6 +271,7 @@ Route::middleware(['auth'])->group(function(){
     
     Route::get('register_new_student','UniversityController@register_new_student')->name('register_new_student')->middleware('permission:administrar_universidades');
 
+    Route::get('register_new_student_group','UniversityController@register_new_student_group')->name('register_new_student_group')->middleware('permission:administrar_universidades');
     
     Route::post('store_students_uni','StudentController@store_students')->name('store_students_uni')->middleware('permission:administrar_universidades');
 });

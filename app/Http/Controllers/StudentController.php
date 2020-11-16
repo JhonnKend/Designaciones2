@@ -66,16 +66,14 @@ class StudentController extends Controller
                 'birth_date' => 'required',
                 'ci' => 'required|unique:student',
                 'email' => 'required',
-                //'exp' => 'required',
-                //'genero' => 'required',
                 'phone' => 'numeric',
-                //validate para el formulario de institucion educativa
                 'id_department' => 'numeric',
                 'id_province' => 'numeric',
                 'id_municipality' => 'numeric',
                 'id_university' => 'numeric',
                 'id_faculty' => 'numeric',
                 'id_career' => 'numeric',
+                'id_periodo' => 'required',
             ],[
                 'ci.unique' => 'El numero de carnet ya esta siendo Utilizado',
                 'a_paterno.alpha' => 'El Apellido Paterno debe contener solo Letras',
@@ -89,13 +87,13 @@ class StudentController extends Controller
                 'ci.required' => 'El Numero de Carnet es Obligatorio',
                 'email.required' => 'El Correo Electronico es Obligatorio',                
                 'phone.numeric' => 'El Telefono debe ser Numerico',
-
                 'id_department.numeric' => 'Seleccione un Departamento',  
                 'id_province.numeric' => 'Seleccione una Provincia',    
                 'id_municipality.numeric' => 'Seleccione un Municipio',
                 'id_faculty.numeric' => 'Seleccione una Facultad',
                 'id_university.numeric' => 'Seleccione una Universidad',
                 'id_career.numeric' => 'Seleccione una Carrera',
+                'id_periodo.required' => 'Debe seleccionar un Periodo',
                       
             ]);
                 $type_internship = Carrer::find($request->id_career);
@@ -107,6 +105,7 @@ class StudentController extends Controller
                 $new_student->exp = request ('exp');
                 $new_student->birth_date = request ('birth_date');
                 $new_student->celular = request ('phone');
+                $new_student->id_date_enabled = request ('id_periodo');
                 $new_student->correo = request ('email');
                 $new_student->direccion = request ('addrees');
                 $new_student->sexo = request ('genero');

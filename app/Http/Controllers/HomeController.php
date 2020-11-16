@@ -23,6 +23,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $hoy = date('Y/m/d');
+        $fechas = \DB::table('enable_periods')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
+        ->where('enable_periods.date_end','>', $hoy)
+        ->where('enable_periods.date_start','<=', $hoy)
+        ->get([
+            'enable_periods.id','enable_periods.date_start','enable_periods.date_end',
+            'gestion.gestion',
+            'periods.period',
+        ]);
+        return view('home',compact('fechas'));
     }
 }

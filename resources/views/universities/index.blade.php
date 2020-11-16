@@ -16,12 +16,11 @@
                 </thead>
                 <tbody>
                     <?php $a = 1 ?>
-                    <?php $a = 1 ?>
                     @forelse( $universities as $r)
                     <tr>
                     <th scope="row">{{$a++}}</th>
                     <td>{{$r->n_universidad}}</td>
-                    <td>{{$r->created_at}}</td>
+                    <td>{{  date('Y-m-d', strtotime($r->created_at))}}</td>
                     <td>{{$r->name_municipality}}</td>
                     <td>
                         @can('show_universities')<a href="{{ route('show_universities') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Centro Medico" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan

@@ -20,10 +20,10 @@
         </div>
         <div class="col-md-3">            
             <div class="form-group">
-                <select name="id_carrera" id="" class="change_select form-control select2bs4 select2-danger name_form">
+                <select name="gestion" id="" class="change_select form-control select2bs4 select2-danger name_form">
                     <option>Seleccione Gestion</option>
-                    @foreach($careers as $r)
-                        <option value="{{ $r->id }}"> {{ $r->name_career }} </option>
+                    @foreach($gestion as $g)
+                        <option value="{{ $g->id }}"> {{ $g->gestion }} </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id=""></small>
@@ -31,10 +31,10 @@
         </div>
         <div class="col-md-3">            
             <div class="form-group">
-                <select name="id_carrera" id="" class="change_select form-control select2bs4 select2-danger name_form">
+                <select name="periodo" id="" class="change_select form-control select2bs4 select2-danger name_form">
                     <option>Seleccione Periodo</option>
-                    @foreach($careers as $r)
-                        <option value="{{ $r->id }}"> {{ $r->name_career }} </option>
+                    @foreach($periodos as $r)
+                        <option value="{{ $r->id }}"> {{ $r->period }} </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id=""></small>

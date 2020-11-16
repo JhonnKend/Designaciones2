@@ -12,6 +12,8 @@ use App\Faculty;
 use App\InternshipTipes;
 use App\Rules\ContrasenaFuerte;
 use App\Student;
+use App\Gestion;
+use App\Periods;
 use App\User;
 
 class UniversityController extends Controller
@@ -337,15 +339,28 @@ class UniversityController extends Controller
     }
     public function view_students_university(Request $request){
         if(\Auth::user()->type_user == 2){
+            $gestion = Gestion::get();
+            $periodos = Periods::get();
             $careers = Carrer::show_careers(\Auth::user()->id_universidad);
-            return view('universities.students.show',compact('careers'));
+            return view('universities.students.show',compact('careers','gestion','periodos'));
         }
     }
     public function search_students(Request $request){
-        $studiantes = Student::studiantes($request->id_carrera);
+        $studiantes = Student::studiantes($request->id_carrera,$request->gestion,$request->periodo);
         return view('universities.students.load_students',compact('studiantes'));
     }
     public function register_new_student(){
+        $hoy = date('Y/m/d');
+        $periodo_habilitados = \DB::table('enable_periods')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
+        ->where('enable_periods.date_end','>', $hoy)
+        ->where('enable_periods.date_start','<=', $hoy)
+        ->get([
+            'enable_periods.id','enable_periods.date_start','enable_periods.date_end',
+            'gestion.gestion',
+            'periods.period',
+        ]);
         $departments = Departamento::all();
         $my_uni = Univeridad::find(\Auth::user()->id_universidad);
         $my_faculties = \DB::table('faculties')
@@ -353,8 +368,29 @@ class UniversityController extends Controller
             ->get([
                 'faculties.id AS id_faculty',
                 'name_faculty',
-           
             ]);
-        return view('universities.students.form_students_uni',compact('departments','my_uni','my_faculties'));
+        return view('universities.students.form_students_uni',compact('departments','my_uni','my_faculties','periodo_habilitados'));
+    }
+    public function register_new_student_group(){
+        $hoy = date('Y/m/d');
+        $periodo_habilitados = \DB::table('enable_periods')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
+        ->where('enable_periods.date_end','>', $hoy)
+        ->where('enable_periods.date_start','<=', $hoy)
+        ->get([
+            'enable_periods.id','enable_periods.date_start','enable_periods.date_end',
+            'gestion.gestion',
+            'periods.period',
+        ]);
+        $departments = Departamento::all();
+        $my_uni = Univeridad::find(\Auth::user()->id_universidad);
+        $my_faculties = \DB::table('faculties')
+            ->where('faculties.id_university','=',\Auth::user()->id_universidad)
+            ->get([
+                'faculties.id AS id_faculty',
+                'name_faculty',
+            ]);
+        return view('universities.students.form_students_uni_group',compact('departments','my_uni','my_faculties','periodo_habilitados'));
     }
 }

@@ -230,7 +230,6 @@ $(function(){
         })
     });
     $(document).on('submit','.save_date',function(e){
-        console.log('asdsadsasdsa 78')
         var formData = new FormData($(this)[0]);
         frutas = []
         $('.name_form').each(function(){
@@ -424,6 +423,7 @@ $(function(){
         $("input[name='"+$(this).attr('name')+"']").removeClass("is-invalid")
         $("input[name='"+$(this).attr('name')+"']").parent().find("small").text('')
         $('#error_character').text('')
+        $('#id_periodo').text('')
     });
     function function_error(data){        
         var asd = Object.keys(data.responseJSON.errors)
@@ -432,6 +432,9 @@ $(function(){
         }
         if(data.responseJSON.errors.character){
             $('#error_character').text(data.responseJSON.errors.character[0])
+        }
+        if(data.responseJSON.errors.id_periodo){
+            $('#id_periodo').text(data.responseJSON.errors.id_periodo[0])
         }
         for(i = 0; i<frutas.length; i++){
             if(asd.includes(frutas[i])) {                

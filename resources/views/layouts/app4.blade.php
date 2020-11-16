@@ -24,6 +24,7 @@
   
   <script src="{{ mix('js/vendor.js') }}"></script>
   <script src="{{ asset('js/select.js') }}" ></script>
+  <script src="{{ asset('js/xlsx.js') }}" ></script>
 </body>
 
 </html>

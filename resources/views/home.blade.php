@@ -164,6 +164,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item load_url" href="{{ route('view_students_university') }}"> Ver Estudiantes</a>
           <a class="collapse-item load_url" href="{{ route('register_new_student') }}"> Registrar Estudiantes</a>
+        <!--a class="collapse-item load_url" href="{{ route('register_new_student_group') }}"> R. Estudiantes en Grupo</a-->
         </div>
       </div>
   </li>
@@ -226,9 +227,51 @@
 
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-			<div id="global_content"></div>
-
-
+			<div id="global_content">
+				@if(Auth::user()->type_user === 2)
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card shadow-sm mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+							  	<h5 class="m-0 text-primary">Lista de Fechas Habilitadas para Registros de Estudiantes</h5>
+							</div>
+							<div class="card-body">
+								<table id="example" class="table align-items-center table-flush">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">NRO.</th>
+											<th scope="col">GESTION</th>
+											<th scope="col">PERIDO</th>
+											<th scope="col">FECHA INICIO</th>
+											<th scope="col">FECHA LIMITE</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php $a = 1 ?>
+										@forelse($fechas as $f)
+											<tr>
+												<th> {{$a++}} </th>
+												<td> {{ $f->gestion }} </td>
+												<td> {{ $f->period }} </td>
+												<td> {{ $f->date_start }} </td>
+												<td> {{ $f->date_end }} </td>
+											</tr>
+										@empty
+											<tr>
+												<td>
+													No hay Fechas habilitadas
+												</td>
+											</tr>
+										@endforelse
+									</tbody>
+								</table>
+							</div>
+						  </div>
+					</div>
+				</div>
+				@else
+				@endif	
+			</div>			
         </div>
         <!---Container Fluid-->
       </div>

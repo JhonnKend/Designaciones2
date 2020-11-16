@@ -138,10 +138,15 @@ class Student extends Model
     protected static function find_universities($id){return \DB::table('univeridads')->where('univeridads.id_municipality','=',$id)->get();}
     protected static function find_faculties($id){return \DB::table('faculties')->where('faculties.id_university','=',$id)->get();}
     protected static function find_faculties_careers($id){return \DB::table('career')->where('career.faculty_id','=',$id)->get();}
-    protected static function studiantes($id){
-        return \DB::table('student')  
+    protected static function studiantes($id,$g,$p){
+        return \DB::table('student')
+        ->join('enable_periods','enable_periods.id','=','student.id_date_enabled')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
         ->where('student.carrer_id','=',$id)
         ->where('student.insti_id','=',1)
+        ->where('enable_periods.id_gestion','=',$g)
+        ->where('enable_periods.id_period','=',$p)
         ->get([
             'student.id',
             'student.name',
