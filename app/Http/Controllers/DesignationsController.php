@@ -78,14 +78,15 @@ class DesignationsController extends Controller
     //Metodos para el control de Cupos para Designacion
 
     public function index_quotas(){
-        $quotas = Quotas::quotas_index();
-        
+        $quotas = Quotas::quotas_index();        
         return view('designations.quotas.index',compact('quotas'));
     }
     public function create_quotas(){
         $departments = Departamento::get();
         $tipes_quotas = InternshipTipes::get();
-        return view('designations.quotas.create',compact('departments','tipes_quotas'));
+        $gestion = Gestion::get();
+        $periodos = Periods::get();
+        return view('designations.quotas.create',compact('departments','tipes_quotas','gestion','periodos'));
     }
     public function store_quotas(Request $request){
         $status = 'success';
@@ -99,7 +100,8 @@ class DesignationsController extends Controller
             'quantity_qoutas' => 'required|numeric',   
             'start_date' => 'required|date',   
             'end_date' => 'required|date',  
-            'periodo' => 'required',   
+            'periodo' => 'numeric', 
+            'gestion' => 'numeric'  
         ],[
             'id_municipality.numeric' => 'Seleccione un Municipio',
 			'id_province.numeric' => 'Seleccione una Provincia',
@@ -112,7 +114,8 @@ class DesignationsController extends Controller
             'start_date.date' => 'Este debe ser de  tipo Fecha',
             'end_date.required' => 'Este campo es requerido',   
             'end_date.date' => 'Este debe ser de  tipo Fecha',   
-            'periodo.required' => 'Debe seleccionar un periodo',   
+            'periodo.numeric' => 'Debe seleccionar un periodo',
+            'gestion.numeric' => 'Debe seleccionar una gestion',
         ]);  
         $e = 0;      
         $var = $request->quantity_qoutas;
@@ -124,6 +127,7 @@ class DesignationsController extends Controller
             $quotas->start_date = request ('start_date');
             $quotas->end_date = request ('end_date');
             $quotas->periodo = request ('periodo');
+            $quotas->gestion = request ('gestion');
             $quotas->designation_date = now();
             $quotas->user_create = \Auth::user()->id;
             $quotas->save();
@@ -251,8 +255,23 @@ class DesignationsController extends Controller
     }
     public function start_student_univesity(){
         $list_students = Designacion::internship_draw_list();
-        return view('designations.designation.form_university_students',compact('list_students'));
+        $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
+        $gestion = Gestion::get();
+        $periodo = Periods::get();
+        return view('designations.designation.form_university_students',compact('tipos_internado','gestion','periodo'));
         //return view('designations.internship_draw.index',compact('list_students'));
+    }
+    public function search_students_uni_(Request $request){
+        $request->validate([
+            'tipo_internado' => 'numeric',
+            'gestion' => 'numeric',
+            'periodo' => 'numeric',
+        ],[
+            'tipo_internado.numeric' => 'Debe Seleccionar una Tipo',
+            'gestion.numeric' => 'Debe Seleccionar una Gestion',
+            'periodo.numeric' => 'Debe Seleccionar un Periodo',
+        ]);
+        $lista = Designacion::list_students($request->tipo_internado, $request->gestion, $request->periodo);
     }
     public function start_student_institute(){
         $list_students = Designacion::internship_draw_list_insti();
@@ -348,6 +367,53 @@ class DesignationsController extends Controller
                 'periods.period',
             ]);
         return view('designations.dates_enabled.index',compact('periodos_enabled'))
+            ->with('info', [
+                'status' => $status,
+                'content' => $conent
+            ]);
+    }
+    public function delete_date_enabled(Request $request){
+        $status = 'success';
+        $conent = 'La fecha se elimino correctamente';
+        $exist = \DB::table('student')->where('student.id_date_enabled','=',$request->id)->get();
+        $count = count($exist);
+        if($count > 0){
+            $status = 'error';
+            $conent = 'La fecha seleccionada no se puede Eliminar, ya existen estudiantes registrados';
+            return redirect()->route('index_enable_periods')
+            ->with('info', [
+                'status' => $status,
+                'content' => $conent
+            ]);
+        }else{ 
+            $delete = Enable_periods::find($request->id)->delete();           
+            return redirect()->route('index_enable_periods')
+            ->with('info', [
+                'status' => $status,
+                'content' => $conent
+            ]);
+        }
+    }
+    public function edit_date_enabled(Request $request){
+        $dates = \DB::table('enable_periods')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
+        ->where('enable_periods.id','=',$request->id)->get([
+            'enable_periods.id','enable_periods.date_start','enable_periods.date_end','enable_periods.id_gestion','enable_periods.id_period',
+            'gestion.gestion',
+            'periods.period'
+            ])->first();
+        return view('designations.dates_enabled.edit',compact('dates'));
+    }
+    public function update_date_enabled(Request $request){
+            $status = 'success';
+            $conent = 'La fechas se actualizaron correctamente';
+            $date_enabled =  Enable_periods::find($request->id_date_enabled);
+            $date_enabled->date_start = $request->get('fecha_inicio');
+            $date_enabled->date_end = $request->get('fecha_fin');
+            $date_enabled->user_edit = \Auth::user()->id;
+            $date_enabled->update();
+            return redirect()->route('index_enable_periods')
             ->with('info', [
                 'status' => $status,
                 'content' => $conent

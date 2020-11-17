@@ -33,6 +33,9 @@ class CreateQuotasTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('periodo');
+            $table->foreign('periodo')->references('id')->on('periods');
+            $table->integer('gestion');
+            $table->foreign('gestion')->references('id')->on('gestion');
             $table->date('designation_date');
             $table->timestamps();
         });

@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designacion extends Model
 {
+    protected static function list_students($t, $g, $p){
+        
+    }
     protected static function internship_draw_list(){
-        return \DB::table('student')            
+        return \DB::table('student')    
             ->leftJoin('quotas','quotas.id_student','=','student.id')
             ->where('type','=',1)
             ->where('quotas.id_student','=',NULL)

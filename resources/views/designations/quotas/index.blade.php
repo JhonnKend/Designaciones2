@@ -22,7 +22,7 @@
                             <td>{{ $a++ }}</td>
                             <td>{{ $r->name_estable_salud }}</td>
                             <td>{{ $r->name_type }}</td>
-                            <td>{{ $r->periodo }}</td>
+                            <td>{{ $r->period }}/{{$r->gestion}}</td>
                             @if($r->status_designation === 1)
                                 <td class="text-success">Designado</td>
                             @else

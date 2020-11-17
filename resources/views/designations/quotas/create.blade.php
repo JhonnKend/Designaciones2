@@ -58,6 +58,7 @@
                 <div class="form-group">
                     <label for="">TIPO INTERNADO</label>
                     <select name="tipe_internado" id="" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione un tipo de internado</option>
                         @forelse($tipes_quotas as $d)
                             <option value="{{ $d->id }}">{{ $d->name_type }}</option>
                         @empty
@@ -70,30 +71,42 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="">CANTIDAD DE CUPOS</label>
-                        <input type="text" name="quantity_qoutas" class="change_select form-control name_form">
+                        <input type="number" name="quantity_qoutas" class="change_select form-control name_form" min="0">
                     <small class="text-danger" id=""></small>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <label for="date">PERIODO</label>
-                    <select name="periodo" id="periodo" class="change_select form-control select2bs4 select2-danger name_form">
-                    <option value="1">1/{{ date('Y')}}</option>
-                    <option value="2">2/{{ date('Y')}}</option>
-                    <option value="3">3/{{ date('Y')}}</option>
-                    <option value="4">4/{{ date('Y')}}</option>
-                    </select>
+                <label for="date">GESTION</label>
+                <select name="gestion" id="gestion" class="change_select form-control select2bs4 select2-danger name_form">
+                    <option value="">Seleccione una Gestion</option>
+                    @foreach($gestion as $g)
+                        <option value="{{ $g->id }}">{{$g->gestion}}</option>
+                    @endforeach
+                </select>
                 <small class="text-danger" id=""></small>
             </div>
             <div class="col-md-4">
+                <label for="date">PERIODO</label>
+                    <select name="periodo" id="periodo" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione un Periodo</option>
+                        @foreach($periodos as $p)
+                            <option value="{{$p->id}}">{{$p->period}}</option>
+                        @endforeach
+                    </select>
+                <small class="text-danger" id=""></small>
+            </div>            
+        </div> <br>
+        <div class="row">
+            <div class="col-md-4">
                 <label for="date">FECHA INICIO</label>
-                    <input type="date" class="form-control name_form" name="start_date">
+                    <input type="date" class="form-control name_form change_select" name="start_date">
                 <small class="text-danger" id=""></small>
             </div>
             <div class="col-md-4">
                 <label for="date">FECHA FIN</label>
-                    <input type="date" class="form-control name_form" name="end_date">
+                    <input type="date" class="form-control name_form change_select" name="end_date">
                 <small class="text-danger" id=""></small>
             </div>
         </div> <br>

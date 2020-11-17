@@ -161,10 +161,13 @@ Route::middleware(['auth'])->group(function(){
     Route::post('edit_periods','DesignationsController@edit_periodos')->name('edit_periods')->middleware('permission:edit_periods');
     Route::post('update_periods/{id}','DesignationsController@update_periodos')->name('update_periods')->middleware('permission:update_periods');
 
-    //Rutas para habilitar fechas y periodos para registro de estudiantes. 
+    //Rutas para habilitar fechas y periodos para registro de estudiantes.    
     Route::get('index_enable_periods','DesignationsController@index_enable_periods')->name('index_enable_periods')->middleware('permission:index_enable_periods');
     Route::get('create_enable_periods','DesignationsController@create_enable_periods')->name('create_enable_periods')->middleware('permission:create_enable_periods');
     Route::post('store_date_enabled','DesignationsController@store_date_enabled')->name('store_date_enabled')->middleware('permission:store_date_enabled');
+    Route::post('delete_date_enabled','DesignationsController@delete_date_enabled')->name('delete_date_enabled')->middleware('permission:delete_date_enabled');
+    Route::post('edit_date_enabled','DesignationsController@edit_date_enabled')->name('edit_date_enabled')->middleware('permission:edit_date_enabled');
+    Route::post('update_date_enabled','DesignationsController@update_date_enabled')->name('update_date_enabled')->middleware('permission:update_date_enabled');
 
     //Rutas para tipos de Internados.
     Route::get('internship_types','DesignationsController@index_internship_types')->name('index_internship_types')->middleware('permission:index_internship_types');
@@ -189,13 +192,16 @@ Route::middleware(['auth'])->group(function(){
         Route::get('report_memorandum/{id_}','DesignationsController@report_memorandum')->name('report_memorandum');
 
     //Rutas para sorteo de designaciones view_designation quota_draw
-    //Route para iniciar sorteo de Designaciones
+    //Route para iniciar sorteo de Designaciones search_students_uni_
     
     Route::get('start_designation', 'DesignationsController@start_designation')->name('start_designation')->middleware('permission:start_designation');
 
     Route::post('start_designation_insti', 'DesignationsController@start_designation_insti')->name('start_designation_insti')->middleware('permission:start_designation_insti');
     
     Route::post('start_student_univesity', 'DesignationsController@start_student_univesity')->name('start_student_univesity')->middleware('permission:start_student_univesity');
+
+    Route::post('search_students_uni_', 'DesignationsController@search_students_uni_')->name('search_students_uni_')->middleware('permission:search_students_uni_');
+
     Route::post('start_student_institute', 'DesignationsController@start_student_institute')->name('start_student_institute')->middleware('permission:start_student_institute');
 
     Route::get('internship_draw','DesignationsController@index_internship_draw')->name('index_internship_draw')->middleware('permission:index_internship_draw');

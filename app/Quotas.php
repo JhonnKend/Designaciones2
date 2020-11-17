@@ -20,11 +20,15 @@ class Quotas extends Model
         return \DB::table('quotas')
             ->join('internation_types','internation_types.id','=','quotas.tipe_internship')
             ->join('estable_saluds','estable_saluds.id','=','quotas.id_stable_salud')
+            ->join('gestion','gestion.id','=','quotas.gestion')
+            ->join('periods','periods.id','=','quotas.periodo')
             ->get([
                 'quotas.id',
+                'quotas.gestion',
                 'quotas.status_designation',
                 'quotas.created_at',
-                'quotas.periodo',
+                'gestion.gestion',
+                'periods.period',
                 'internation_types.name_type',
                 'estable_saluds.name_estable_salud',
             ]);
