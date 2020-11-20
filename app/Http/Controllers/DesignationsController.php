@@ -8,6 +8,7 @@ use App\Quotas;
 use App\Departamento;
 use App\Designacion;
 use App\Enable_periods;
+use App\EstableSalud;
 use App\Student;
 use App\Gestion;
 use App\Periods;
@@ -78,8 +79,28 @@ class DesignationsController extends Controller
     //Metodos para el control de Cupos para Designacion
 
     public function index_quotas(){
-        $quotas = Quotas::quotas_index();        
-        return view('designations.quotas.index',compact('quotas'));
+        $quotas = Quotas::quotas_index();   
+        $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
+        $gestion = Gestion::get();
+        $periodo = Periods::get();     
+        return view('designations.quotas.index',compact('quotas','gestion','periodo','tipos_internado'));
+    }
+    /* para cargar lista de centros medicos con sus cupos */
+    public function cargar_lsita_centros_medicos_cupos(Request $request){
+        $gestion = $request->gestion;
+        $periodo = $request->periodo;
+        $list_medical_centers = EstableSalud::list_medical_centers($request->gestion, $request->periodo);
+        $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
+        return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));
+    }
+    public function guardar_cupos(Request $request){
+        $gestion = $request->ges;
+        $periodo = $request->per;
+        $id_es = $request->id_es;
+        $list_medical_centers = EstableSalud::list_medical_centers($request->ges,$request->per);        
+        $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
+        return $cantidad = count(\DB::table('quotas')->where('quotas.gestion','=',$gestion)->where('quotas.periodo','=',$periodo)->where('quotas.id_stable_salud','=',$id_es)->get());
+        return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));
     }
     public function create_quotas(){
         $departments = Departamento::get();

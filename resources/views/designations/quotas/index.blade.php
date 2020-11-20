@@ -3,40 +3,66 @@
         Lista de Cupos Registrados
     @endslot    
     @slot('bodycard')
-    <div class="table-responsive p-3">
-            <table id="example" class="table align-items-center table-flush">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">NRO.</th>
-                        <th scope="col">CENTRO MEDICO</th>
-                        <th scope="col">TIPO CUPO</th>
-                        <th scope="col">PERIODO</th>
-                        <th scope="col">ESTADO</th>
-                        <th scope="col"> ACCION </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $a = 1 ?>
-                    @foreach($quotas as $r)
-                        <tr>
-                            <td>{{ $a++ }}</td>
-                            <td>{{ $r->name_estable_salud }}</td>
-                            <td>{{ $r->name_type }}</td>
-                            <td>{{ $r->period }}/{{$r->gestion}}</td>
-                            @if($r->status_designation === 1)
-                                <td class="text-success">Designado</td>
-                            @else
-                                <td class="text-danger">No Designado</td>
-                            @endif
-                            <td>
-                                @can('show_quotas')<a href="{{ route('show_quotas') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Detalles" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                                @can('edit_quotas')<!--a href="{{ route('edit_quotas') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Tipo Internado" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a-->@endcan
-                                @can('delete_quotas')<a href="{{ route('delete_quotas') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Detalles" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <form action="{{ route('cargar_lsita_centros_medicos_cupos') }}" method="POST" class="load_medical_centers">
+        @csrf  
+        <div class="row">            
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="gestion" id="gestion" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione una Gestion</option>
+                        @foreach($gestion as $g)
+                            <option value="{{$g->id}}">{{$g->gestion}}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="periodo" id="periodo" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione un Periodo</option>
+                        @foreach($periodo as $p)
+                            <option value="{{$p->id}}">{{$p->period}}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="tipo" id="tipo" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="0">Todos</option>
+                        <option value="1">Con Cupos</option>
+                        <option value="2">Sin Cupos</option>                        
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success btn-block"> <i class="fas fa-search"></i> Cargar Datos</button>
+            </div>
+        </div>
+    </form> <br>
+    <div class="row" style="font-size: 12px">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                    <table id="load_table_list" class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">CODIGO</th>
+                                <th scope="col">ESTABLECIMIENTO</th>
+                                <th scope="col">MUNICIPIO</th>
+                                @foreach ($tipos_internado as $item)
+                                <th scope="col">{{ strtoupper($item->name_type) }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         @endslot
         @slot('action')
@@ -60,27 +86,3 @@ $(function(){
 })
 </script>
 @endif
-<script>
-    $(document).ready(function() {
-    $('#example').DataTable({
-        language: {
-            "decimal": "",
-            "emptyTable": "No hay información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "lengthMenu": "Mostrar _MENU_ Entradas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar por:",
-            "zeroRecords": "Sin resultados encontrados",
-            "paginate": {
-                "first": "Primero",
-                "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        },
-    });
-} );
-</script>

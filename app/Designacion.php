@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Designacion extends Model
 {
     protected static function list_students($t, $g, $p){
-        
+        return "Nos quedamos aqui en esta parte";
+        \DB::table('student')    
+            ->leftJoin('quotas','quotas.id_student','=','student.id')
+            ->where('type','=',1)
+            ->where('quotas.id_student','=',NULL)
+            ->get([
+                'student.id AS id_student','student.name','student.ap_pat','student.ap_mat',
+                'quotas.id','quotas.status_designation',
+            ]);
     }
     protected static function internship_draw_list(){
         return \DB::table('student')    

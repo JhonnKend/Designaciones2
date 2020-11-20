@@ -4,6 +4,56 @@ $(function(){
         $("#global_content").load($(this).attr('href'))
         return false;
     });  
+    $(document).on('change','.guardar_cupos',function(e){
+        alert($(this).attr("val"))
+        var cant = $(this).attr("value");
+        var res = $(this).attr("name").split("_");
+        var id_es =  $('input[name=id_'+res[1]+']').val();        
+        var ges =  $('input[name=ges_'+res[1]+']').val();        
+        var per =  $('input[name=per_'+res[1]+']').val();        
+        console.log(res)
+        alert($(this).attr("name"))
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'guardar_cupos',
+        	data:{cant,id_es,ges,per,_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $('#medical_center').append('<option>--Seleccione--</option>');
+                for(var i = 0; i < data.length; i++){
+                    $('#medical_center').append('<option value=' + data[i].id + '>' + data[i].name_estable_salud + '</option>');
+                }
+                return false;
+        	},
+        	error:function(data){
+        	}
+        })
+    })
+    $(document).on('submit','.load_medical_centers',function(e){
+        var formData = new FormData($(this)[0]);
+        frutas = []
+        $('.name_form').each(function(){
+            aux = $(this).attr("name")
+            frutas.push(aux)
+        })
+        $.ajaxSetup({
+            header:$('meta[name="_token"]').attr('content')
+        })
+        e.preventDefault(e)
+        $.ajax({
+            type:$(this).attr('method'),
+            url:$(this).attr('action'),
+            data:formData,
+            contentType: false,
+            processData: false,
+            success:function(data){                
+                $("#load_table_list").html(data)                                   
+            },
+            error:function(data){
+                function_error(data)
+            }
+        })
+    })
     $(document).on('click','.start_load_url',function(e){
         e.preventDefault(e)
         $.ajax({

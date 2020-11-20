@@ -190,6 +190,9 @@ Route::middleware(['auth'])->group(function(){
         Route::post('load_medical_center_qoutas','DesignationsController@load_medical_center_qoutas')->name('load_medical_center_qoutas');
         Route::get('report_certification/{id_}','DesignationsController@report_certification')->name('report_certification');
         Route::get('report_memorandum/{id_}','DesignationsController@report_memorandum')->name('report_memorandum');
+        Route::post('cargar_lsita_centros_medicos_cupos','DesignationsController@cargar_lsita_centros_medicos_cupos')->name('cargar_lsita_centros_medicos_cupos')->middleware('permission:cargar_lsita_centros_medicos_cupos');
+        
+        Route::post('guardar_cupos','DesignationsController@guardar_cupos')->name('guardar_cupos')->middleware('permission:guardar_cupos');
 
     //Rutas para sorteo de designaciones view_designation quota_draw
     //Route para iniciar sorteo de Designaciones search_students_uni_
