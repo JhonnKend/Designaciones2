@@ -6,6 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designacion extends Model
 {
+    protected static function cnatidad_cupos($id_es, $per, $ges){
+        return \DB::table('quotas')
+            ->where('quotas.id_stable_salud','=',$id_es)
+            ->where('quotas.periodo','=',$per)
+            ->where('quotas.gestion','=',$ges)
+            ->get();
+    }
+    protected static function ver_periodos_gestion($id){
+        return \DB::table('enable_periods')
+            ->join('periods','periods.id','=','enable_periods.id_period')
+            ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+            ->where('id_gestion','=',$id)
+            ->get([
+                'periods.period','periods.id as id_periodo',
+                'enable_periods.date_start','enable_periods.date_end',
+                'gestion.id as id_gestion','gestion.gestion',
+            ]);
+    }    
     protected static function list_students($t, $g, $p){
         return "Nos quedamos aqui en esta parte";
         \DB::table('student')    
@@ -242,5 +260,22 @@ class Designacion extends Model
             ->join('univeridads','univeridads.id','=','faculties.id_university')
             ->where('student.id','=', $id)  
             ->get();
+    }
+    protected static function count_cupos_medicos($id_centro_salud,$gestion,$periodo,$m){
+        return \DB::table('quotas')
+            ->where('quotas.id_stable_salud','=',$id_centro_salud)
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->where('quotas.tipe_internship','=',$m)
+            ->where('quotas.status_designation','=',0)
+            ->get(['quotas.status_designation']);
+    }
+    protected static function cant_cupos_registrados($id_centro_salud,$gestion,$periodo,$m){
+        return \DB::table('quotas')
+            ->where('quotas.id_stable_salud','=',$id_centro_salud)
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->where('quotas.tipe_internship','=',$m)
+            ->get(['quotas.status_designation']);
     }
 }

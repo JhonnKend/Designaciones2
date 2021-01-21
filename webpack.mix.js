@@ -21,6 +21,7 @@ mix
    'resources/vendor/select2/css/select2-bootstrap4.min.css',
    'resources/vendor/@fortawesome/fontawesome-free/css/all.min.css',   
    'resources/vendor/dataTables/css/dataTables.bootstrap.css',
+   'resources/vendor/datepick/bootstrap-datepicker.min.css',
 ],'public/css/app.css')
 
 .js('resources/js/app.js', 'public/js')
@@ -34,6 +35,7 @@ mix
    'resources/vendor/select2/js/select2.js',   
    'resources/vendor/dataTables/js/dataTables.bootstrap.min.js',
    'resources/vendor/dataTables/js/dataTables.bootstrap4.min.js',
+   'resources/vendor/datepick/bootstrap-datepicker.min.js',
    
    //'resources/vendor/nucleo/jsads/jquery-scrollLock.min.js',
 ],'public/js/vendor.js')

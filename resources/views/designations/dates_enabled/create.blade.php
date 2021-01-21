@@ -1,6 +1,6 @@
 @component('components.create_card')
 @slot('title')
-    Registro Nuevo Periodo de Registro de Estudiantes
+    Registro nuevo Periodo de Registro de Estudiantes
 @endslot    
 @slot('bodycard')
 <form action="{{ route('store_date_enabled') }}" method="POST" class="save_date">  

@@ -8,6 +8,8 @@ use App\Student;
 use App\Carrer;
 use App\CareerInstitute;
 use App\Exports\StudentsExport;
+use App\Imports\StudentImport;
+
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\Presets\React;
@@ -415,5 +417,13 @@ class StudentController extends Controller
         //$designate_date = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->designation_date));
         //$dat2 = $designate_date->formatLocalized(' %d de %B del %Y');
         return \PDF::loadView('reports.students',compact('students'))->setPaper('letter', 'landscape')->stream('Estudantes Registrados.pdf');
+    }
+    public function import_students(Request $request){
+        $p = $request->id_periodo;
+        $c = $request->id_career;
+        $file = $request->file('file');
+        Excel::import(new StudentImport($p,$c), $file);
+
+        return back()->with('message', 'Importacion de Usuarios Completa');
     }
 }

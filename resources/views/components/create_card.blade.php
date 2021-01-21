@@ -1,4 +1,4 @@
-<div class="col-xl-12 mt">
+<div class="col-xl-12">
     <div class="card">
         <div class="card-header">
             <div class="row align-items-center">

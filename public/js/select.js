@@ -4,20 +4,44 @@ $(function(){
         $("#global_content").load($(this).attr('href'))
         return false;
     });  
-    $(document).on('change','.guardar_cupos',function(e){
-        alert($(this).attr("val"))
-        var cant = $(this).attr("value");
+    $(document).on('change','.change_load_view',function(e){
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'load_view',
+        	data:{id:$(this).find(":selected").val(),_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $("#cargar_aqui_lista").html(data)
+        	},
+        	error:function(data){
+        	}
+        })
+    })
+    $(document).on('change','.load_medical_centers',function(e){
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'cargar_lsita_centros_medicos_cupos',
+        	data:{gestion:document.getElementById("gestion").value,periodo:$(this).find(":selected").val(),_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $("#load_table_list").html(data)
+        	},
+        	error:function(data){
+        	}
+        })
+    })
+    $(document).on('change','.guardar_cupos',function(e){        
         var res = $(this).attr("name").split("_");
-        var id_es =  $('input[name=id_'+res[1]+']').val();        
-        var ges =  $('input[name=ges_'+res[1]+']').val();        
-        var per =  $('input[name=per_'+res[1]+']').val();        
-        console.log(res)
-        alert($(this).attr("name"))
+        var r = $(this).attr("name")
+        var cant_cupos = document.getElementById(r).value;
+        var id_centro_salud =  $('input[name=id_'+res[1]+']').val();
+        var ges =  $('input[name=ges_'+res[1]+']').val();
+        var per =  $('input[name=per_'+res[1]+']').val();
         e.preventDefault(e)
         $.ajax({
         	type:'POST',
         	url:'guardar_cupos',
-        	data:{cant,id_es,ges,per,_token:$('meta[name="csrf-token"]').attr('content')},
+        	data:{cant_cupos,id_centro_salud,ges,per,res,_token:$('meta[name="csrf-token"]').attr('content')},
         	success:function(data){
                 $('#medical_center').append('<option>--Seleccione--</option>');
                 for(var i = 0; i < data.length; i++){

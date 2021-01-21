@@ -194,6 +194,9 @@ Route::middleware(['auth'])->group(function(){
         
         Route::post('guardar_cupos','DesignationsController@guardar_cupos')->name('guardar_cupos')->middleware('permission:guardar_cupos');
 
+        //para ver lista de periodos 
+        Route::post('load_view','DesignationsController@load_view')->name('load_view');
+
     //Rutas para sorteo de designaciones view_designation quota_draw
     //Route para iniciar sorteo de Designaciones search_students_uni_
     
@@ -283,4 +286,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('register_new_student_group','UniversityController@register_new_student_group')->name('register_new_student_group')->middleware('permission:administrar_universidades');
     
     Route::post('store_students_uni','StudentController@store_students')->name('store_students_uni')->middleware('permission:administrar_universidades');
+
+
+    Route::post('import-list-excel','StudentController@import_students')->name('users.import.excel');
+
 });

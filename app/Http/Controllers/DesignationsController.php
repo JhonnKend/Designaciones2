@@ -76,7 +76,7 @@ class DesignationsController extends Controller
         return "Borrar";
     }
 
-    //Metodos para el control de Cupos para Designacion
+    //Metodos para el control de Cupos para Designacions
 
     public function index_quotas(){
         $quotas = Quotas::quotas_index();   
@@ -85,8 +85,14 @@ class DesignationsController extends Controller
         $periodo = Periods::get();     
         return view('designations.quotas.index',compact('quotas','gestion','periodo','tipos_internado'));
     }
-    /* para cargar lista de centros medicos con sus cupos */
+    /* Para poder ver la lista de periodos por gestion */
+    public function load_view(Request $request){
+        $periodos_habilitados = Designacion::ver_periodos_gestion($request->id);
+        return view('designations.quotas.periodos_index',compact('periodos_habilitados'));
+    }
+    /* para cargar lista de centros medicos con sus cupos */ 
     public function cargar_lsita_centros_medicos_cupos(Request $request){
+        //return "Holas como estas";
         $gestion = $request->gestion;
         $periodo = $request->periodo;
         $list_medical_centers = EstableSalud::list_medical_centers($request->gestion, $request->periodo);
@@ -94,13 +100,32 @@ class DesignationsController extends Controller
         return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));
     }
     public function guardar_cupos(Request $request){
+        //Para poder guardar la cantidad de cupos de cada tipo y cada centro medico cant_cupos
+        if($request->res[0] === "med"){
+            $m = 1;
+            $estado = Designacion::count_cupos_medicos($request->id_centro_salud,$request->ges,$request->per,$m);
+            $num = count($estado);
+            if($num != 0){
+                $cant_c = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                $cant = count($cant_c);
+                return $request->cant_cupos;
+            }else{
+                return "No se puede Modificar por que hay Estudiantes Designados...";
+            }
+        }if($request->res[0] === "enf"){
+            return $request->res[0];
+        }if($request->res[0] === "den"){
+            return $request->res[0];
+        }
+        /*return $cantidad_cupos = Designacion::cnatidad_cupos($request->id_es, $request->per, $request->ges);
+        
         $gestion = $request->ges;
         $periodo = $request->per;
         $id_es = $request->id_es;
         $list_medical_centers = EstableSalud::list_medical_centers($request->ges,$request->per);        
         $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
         return $cantidad = count(\DB::table('quotas')->where('quotas.gestion','=',$gestion)->where('quotas.periodo','=',$periodo)->where('quotas.id_stable_salud','=',$id_es)->get());
-        return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));
+        return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));*/
     }
     public function create_quotas(){
         $departments = Departamento::get();
@@ -427,17 +452,17 @@ class DesignationsController extends Controller
         return view('designations.dates_enabled.edit',compact('dates'));
     }
     public function update_date_enabled(Request $request){
-            $status = 'success';
-            $conent = 'La fechas se actualizaron correctamente';
-            $date_enabled =  Enable_periods::find($request->id_date_enabled);
-            $date_enabled->date_start = $request->get('fecha_inicio');
-            $date_enabled->date_end = $request->get('fecha_fin');
-            $date_enabled->user_edit = \Auth::user()->id;
-            $date_enabled->update();
-            return redirect()->route('index_enable_periods')
-            ->with('info', [
-                'status' => $status,
-                'content' => $conent
-            ]);
+        $status = 'success';
+        $conent = 'La fechas se actualizaron correctamente';
+        $date_enabled =  Enable_periods::find($request->id_date_enabled);
+        $date_enabled->date_start = $request->get('fecha_inicio');
+        $date_enabled->date_end = $request->get('fecha_fin');
+        $date_enabled->user_edit = \Auth::user()->id;
+        $date_enabled->update();
+        return redirect()->route('index_enable_periods')
+        ->with('info', [
+            'status' => $status,
+            'content' => $conent
+        ]);
     }
 }

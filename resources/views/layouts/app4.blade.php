@@ -14,17 +14,9 @@
 </head>
 
 <body id="page-top">
-    @yield('content')
-
-  <!-- Scroll to top -->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  
-  <script src="{{ mix('js/vendor.js') }}"></script>
-  <script src="{{ asset('js/select.js') }}" ></script>
-  <script src="{{ asset('js/xlsx.js') }}" ></script>
+    @yield('content')  
 </body>
-
+    <script src="{{ mix('js/vendor.js') }}"></script>
+    <script src="{{ asset('js/select.js') }}" ></script>
+    <script src="{{ asset('js/xlsx.js') }}" ></script>
 </html>

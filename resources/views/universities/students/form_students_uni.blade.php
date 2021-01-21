@@ -1,9 +1,10 @@
 @component('components.create_card')
 @slot('title')
-    Registro  Nuevo Estudiante
+    Registro  Nuevos Estudiantes
 @endslot    
 @slot('bodycard')
-<form action="{{ route('store_students_uni') }}" method="POST" class="save_date">  
+<!--form action="{{ route('store_students_uni') }}" method="POST" class="save_date"-->  
+<form action="{{ route('users.import.excel') }}" method="POST" enctype="multipart/form-data">
     @csrf  
     <input type="hidden" name="type_uni_inst" value="universidad">
     <div class="text-center">
@@ -81,6 +82,17 @@
         <h6 class="card-title text-success"></i> DATOS GENERALES DEL ESTUDIANTE</h6> <hr>
     </div>
     <div class="row">
+        <div class="col-md-12">                    
+            
+                @csrf
+                @if(Session::has('message'))
+                    <p>{{ Session::get('message') }}</p>
+                @endif
+                <input type="file" name="file">
+                
+        </div>
+    </div>
+    <!--div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <label for="name_student">NOMBRES</label>
@@ -161,7 +173,7 @@
                 <small class="text-danger" id=""></small>
             </div>
         </div>
-    </div>
+    </div-->
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-3">

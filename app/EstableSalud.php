@@ -23,7 +23,7 @@ class EstableSalud extends Model
         $q = "SELECT es.id, es.name_estable_salud, es.cod_estable_salud, m.name_municipality,
                 (SELECT IFNULL((SELECT count(q.id) FROM quotas q INNER JOIN gestion g ON q.gestion = g.id INNER JOIN periods p ON q.periodo = p.id WHERE tipe_internship = 1 AND g.id = :g AND p.id = :p AND id_stable_salud = es.id GROUP BY id_stable_salud), 0)) as m,
                 (SELECT IFNULL((SELECT count(q.id) FROM quotas q INNER JOIN gestion g ON q.gestion = g.id INNER JOIN periods p ON q.periodo = p.id WHERE tipe_internship = 2 AND g.id = :g1 AND p.id = :p1 AND id_stable_salud = es.id GROUP BY id_stable_salud), 0)) as e,
-                (SELECT IFNULL((SELECT count(q.id) FROM quotas q INNER JOIN gestion g ON q.gestion = g.id INNER JOIN periods p ON q.periodo = p.id WHERE tipe_internship = 3 AND g.id = :g2 AND p.id = :p2 AND id_stable_salud = es.id GROUP BY id_stable_salud), 0)) as d 
+                (SELECT IFNULL((SELECT count(q.id) FROM quotas q INNER JOIN gestion g ON q.gestion = g.id INNER JOIN periods p ON q.periodo = p.id WHERE tipe_internship = 3 AND g.id = :g2 AND p.id = :p2 AND id_stable_salud = es.id GROUP BY id_stable_salud), 0)) as d
             FROM estable_saluds es 
                 INNER JOIN municipalities m
                     ON m.id = es.id_muni

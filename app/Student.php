@@ -22,8 +22,15 @@ class Student extends Model
         'correo',
         'sexo',
         'insti_id',
+        'type',
+        'sexo',
+        'insti_id',
+        'level_ac',
+        'direccion',
 		'carrer_id',
         'caso_esp',
+        'id_date_enabled',
+        'user_create',
 
     ];
     protected function view_test(){

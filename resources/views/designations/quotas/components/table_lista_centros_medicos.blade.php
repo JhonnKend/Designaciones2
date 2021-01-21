@@ -23,13 +23,13 @@
                         <td>{{$t->name_estable_salud}}</td>
                         <td>{{$t->name_municipality}}</td>
                         <td>
-                            <input value="{{$t->m}}" form="form{{$t->id}}" name="med_{{$t->id}}" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
+                            <input value="{{$t->m}}" form="form{{$t->id}}" id="med_{{$t->id}}" name="med_{{$t->id}}" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
                         </td>
                         <td>
-                            <input value="{{$t->e}}" form="form{{$t->id}}" name="enf" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
+                            <input value="{{$t->e}}" form="form{{$t->id}}" id="enf_{{$t->id}}" name="enf_{{$t->id}}" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
                         </td>  
                         <td>
-                            <input value="{{$t->d}}" form="form{{$t->id}}" name="den" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
+                            <input value="{{$t->d}}" form="form{{$t->id}}" id="den_{{$t->id}}" name="den_{{$t->id}}" class="form-control form-control-sm guardar_cupos" type="number" min="0" placeholder="" style="width : 70px; heigth : 1px">    
                         </td>             
                     </form>        
                 </tr>

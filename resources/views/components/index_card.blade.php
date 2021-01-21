@@ -1,4 +1,4 @@
-<div class="col-xl-12 mt">
+<div class="col-xl-12">
     <div class="card">
         <div class="card-header border-0">
             <div class="row align-items-center">
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div> <hr>
-        <div class="card-body table-responsive">
+        <div class="card-body">
             {!! $bodycard ?? '' !!}
         </div>
     </div>

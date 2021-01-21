@@ -97,14 +97,14 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_designations" aria-expanded="true"
           aria-controls="collapse_designations">
           <i class="fas fa-fw fa-columns"></i>
-          <span>Gestión Disgnaciones</span>
+          <span>Configuraciones</span>
         </a>
         <div id="collapse_designations" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item load_url" href="{{ route('index_internship_types') }}">Tipos de Internado</a>
-            <a class="collapse-item load_url" href="{{ route('index_quotas') }}">Cupos</a>
+            <a class="collapse-item load_url" href="{{ route('index_internship_types') }}">Tipos de Internado</a>            
             <a class="collapse-item load_url" href="{{ route('index_gestion') }}">Gestion</a>
             <a class="collapse-item load_url" href="{{ route('index_periods') }}">Periodos</a>
+            <a class="collapse-item load_url" href="{{ route('index_quotas') }}">Gestion Periodos</a>
           </div>
         </div>
 	  </li>
@@ -231,7 +231,7 @@
 				@if(Auth::user()->type_user === 2)
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card shadow-sm mb-4">
+						<div class="card shadow-sm">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 							  	<h5 class="m-0 text-primary">Lista de Fechas Habilitadas para Registros de Estudiantes</h5>
 							</div>
