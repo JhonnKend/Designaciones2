@@ -43,11 +43,7 @@ $(function(){
         	url:'guardar_cupos',
         	data:{cant_cupos,id_centro_salud,ges,per,res,_token:$('meta[name="csrf-token"]').attr('content')},
         	success:function(data){
-                $('#medical_center').append('<option>--Seleccione--</option>');
-                for(var i = 0; i < data.length; i++){
-                    $('#medical_center').append('<option value=' + data[i].id + '>' + data[i].name_estable_salud + '</option>');
-                }
-                return false;
+                alert(data);
         	},
         	error:function(data){
         	}
@@ -84,6 +80,20 @@ $(function(){
         	type:'POST',
         	url:$(this).attr('href'),
         	data:{_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $("#global_content").html(data)
+                return false;
+        	},
+        	error:function(data){
+        	}
+        })
+    });
+    $(document).on('click','.confirmar_sorteo',function(e){
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'confirmar_sorteo_ruta',
+        	data:{datos:$('input[name=datos').val(),_token:$('meta[name="csrf-token"]').attr('content')},
         	success:function(data){
                 $("#global_content").html(data)
                 return false;

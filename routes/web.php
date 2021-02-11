@@ -214,6 +214,10 @@ Route::middleware(['auth'])->group(function(){
     Route::post('start_designate','DesignationsController@start_designate')->name('start_designate')->middleware('permission:start_designate');
     Route::post('view_designation','DesignationsController@view_designation')->name('view_designation')->middleware('permission:view_designation');
 
+    //Primer sorteo tentativo para estudiantes universitarios
+    Route::post('sorteo_tentativo','DesignationsController@sorteo_tentativo')->name('sorteo_tentativo')->middleware('permission:sorteo_tentativo');
+    Route::post('confirmar_sorteo_ruta','DesignationsController@confirmar_sorteo_ruta')->name('confirmar_sorteo_ruta')->middleware('permission:confirmar_sorteo_ruta');
+
     Route::post('view_designation_insti','DesignationsController@view_designation_insti')->name('view_designation_insti')->middleware('permission:view_designation_insti');
 
     Route::post('quota_draw','DesignationsController@quota_draw')->name('quota_draw')->middleware('permission:quota_draw');

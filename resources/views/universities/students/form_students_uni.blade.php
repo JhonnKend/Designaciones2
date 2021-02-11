@@ -4,7 +4,7 @@
 @endslot    
 @slot('bodycard')
 <!--form action="{{ route('store_students_uni') }}" method="POST" class="save_date"-->  
-<form action="{{ route('users.import.excel') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('users.import.excel') }}" method="POST" enctype="multipart/form-data" >
     @csrf  
     <input type="hidden" name="type_uni_inst" value="universidad">
     <div class="text-center">
@@ -185,13 +185,7 @@
         <div class="col-md-3"></div>
     </div>
 </form>
-<script>
-$(function () {
-  $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
-})
-</script>
+
 @endslot
 @slot('action')
     @can('index_universities')
@@ -204,5 +198,23 @@ $(function () {
 $('.select2bs4').select2({
     theme: 'bootstrap4'
 })
+})
+</script>
+@if( session()->has('info'))
+<script>
+$(function(){        
+    toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    }
+    toastr.{{ session('info')['status'] }}('{{ session("info")["content"] }}');
+})
+</script>
+@endif
+<script>
+$(function () {
+  $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
 })
 </script>

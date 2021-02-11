@@ -229,6 +229,17 @@
         <div class="container-fluid" id="container-wrapper">
 			<div id="global_content">
 				@if(Auth::user()->type_user === 2)
+        @if( session()->has('info'))
+        <script>
+        $(function(){        
+            toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            }
+            toastr.{{ session('info')['status'] }}('{{ session("info")["content"] }}');
+        })
+        </script>
+        @endif
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card shadow-sm">

@@ -5,8 +5,11 @@ namespace App\Imports;
 use App\Student;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithLimit;
 
-class StudentImport implements ToModel
+class StudentImport implements ToModel, WithLimit, WithValidation
 {
     protected  $p;
     protected  $c;
@@ -19,7 +22,8 @@ class StudentImport implements ToModel
     {
         $this->p = $p;
         $this->c = $c;
-    }       
+    }  
+    
     public function model(array $row)
     {
         $pe = $this->p;
@@ -44,4 +48,21 @@ class StudentImport implements ToModel
             'user_create' => Auth::user()->id,
         ]);
     }
+    public function rules(): array
+    {
+        return [
+            '1' => 'unique:users,name'
+        ];
+
+    }    
+    public function customValidationMessages()
+    {
+        return [
+            '1.unique' => 'Correo ya esta en uso.',
+        ];
+    } 
+    public function limit(): int
+{
+    return 10;
+}
 }

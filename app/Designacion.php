@@ -6,12 +6,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designacion extends Model
 {
+    protected static function lista_sorteada($tipo, $gestion, $periodo){
+        return \DB::table('quotas')
+            ->join('student','student.id','=','quotas.id_student')
+            ->join('estable_saluds','estable_saluds.id','=','quotas.id_stable_salud')
+            ->where('quotas.tipe_internship','=',$tipo)
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->get([
+                'quotas.id',
+                'student.id AS id_estudiante','student.name','student.ap_pat','student.ap_mat','student.ci',
+                'estable_saluds.name_estable_salud',
+            ]);
+    }
+    protected static function cupo_suerte($tipo, $gestion, $periodo){
+        return \DB::table('quotas')
+            ->where('quotas.tipe_internship','=',$tipo)
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->where('quotas.status_designation','=',0)
+            ->inRandomOrder()
+            ->take(1)->get();
+    }
     protected static function cnatidad_cupos($id_es, $per, $ges){
         return \DB::table('quotas')
             ->where('quotas.id_stable_salud','=',$id_es)
             ->where('quotas.periodo','=',$per)
             ->where('quotas.gestion','=',$ges)
-            ->get();
+            ->where('quotas.confirmado','<>',"si")
+            ->get();    
     }
     protected static function ver_periodos_gestion($id){
         return \DB::table('enable_periods')
@@ -25,15 +48,27 @@ class Designacion extends Model
             ]);
     }    
     protected static function list_students($t, $g, $p){
-        return "Nos quedamos aqui en esta parte";
-        \DB::table('student')    
+        return \DB::table('student')
+            ->join('career','career.id','=','student.carrer_id')
+            ->join('enable_periods','student.id_date_enabled','=','enable_periods.id')
+            ->leftJoin('quotas','quotas.id_student','=','student.id')
+            ->where('enable_periods.id_gestion','=',$g)
+            ->where('enable_periods.id_period','=',$p)
+            ->where('career.type_internation','=',$t)
+            ->where('quotas.id_student','=',NULL)
+            ->where('student.type','=',1)
+            ->get([
+                'student.name','student.ap_pat','student.ap_mat','student.id','student.ci',
+                'quotas.id AS id_d',
+            ]);
+        /*\DB::table('student')    
             ->leftJoin('quotas','quotas.id_student','=','student.id')
             ->where('type','=',1)
             ->where('quotas.id_student','=',NULL)
             ->get([
                 'student.id AS id_student','student.name','student.ap_pat','student.ap_mat',
                 'quotas.id','quotas.status_designation',
-            ]);
+            ]);*/
     }
     protected static function internship_draw_list(){
         return \DB::table('student')    
@@ -261,21 +296,50 @@ class Designacion extends Model
             ->where('student.id','=', $id)  
             ->get();
     }
-    protected static function count_cupos_medicos($id_centro_salud,$gestion,$periodo,$m){
-        return \DB::table('quotas')
+    protected static function ver_estado_cupos($id_centro_salud,$gestion,$periodo,$m){
+        $estado = \DB::table('quotas')
             ->where('quotas.id_stable_salud','=',$id_centro_salud)
             ->where('quotas.gestion','=',$gestion)
             ->where('quotas.periodo','=',$periodo)
             ->where('quotas.tipe_internship','=',$m)
             ->where('quotas.status_designation','=',0)
             ->get(['quotas.status_designation']);
+        if( isset($estado)){
+            $e = 0;
+        }else{
+            $e = $estado[0]->status_designation;
+        }
+        if($e == 0){
+            return true;
+        }else{
+            return false;
+        }
+
     }
     protected static function cant_cupos_registrados($id_centro_salud,$gestion,$periodo,$m){
-        return \DB::table('quotas')
+        $cantidad = \DB::table('quotas')
             ->where('quotas.id_stable_salud','=',$id_centro_salud)
             ->where('quotas.gestion','=',$gestion)
             ->where('quotas.periodo','=',$periodo)
             ->where('quotas.tipe_internship','=',$m)
             ->get(['quotas.status_designation']);
+        return $c = count($cantidad);
     }
+    protected static function cantidad_cupos($t,$gestion,$periodo){
+        $cantidad = \DB::table('quotas')
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->where('quotas.tipe_internship','=',$t)
+            ->where('quotas.status_designation','=',0)
+            ->get(['quotas.status_designation']);
+        return $c = count($cantidad);
+    }
+    protected static function borrar_cupos_cero($id_centro_salud,$gestion,$periodo,$m){
+        return \DB::table('quotas')            
+            ->where('quotas.id_stable_salud','=',$id_centro_salud)
+            ->where('quotas.gestion','=',$gestion)
+            ->where('quotas.periodo','=',$periodo)
+            ->where('quotas.tipe_internship','=',$m)
+            ->delete();
+        }
 }

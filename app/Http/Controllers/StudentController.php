@@ -341,7 +341,7 @@ class StudentController extends Controller
             $save_student->insti_id = $request->id_career;
             //$save_student->caso_esp = $request->caso_esp;
             $save_student->save();
-            return redirect()->route('index_students')
+            return redirect()->route('/')
                 ->with('info', [
                     'status' => $status,
                     'content' => $conent
@@ -419,11 +419,15 @@ class StudentController extends Controller
         return \PDF::loadView('reports.students',compact('students'))->setPaper('letter', 'landscape')->stream('Estudantes Registrados.pdf');
     }
     public function import_students(Request $request){
+        $status = 'success';
+        $conent = 'La lista de Estudiantes se Registro Correctamente.';
         $p = $request->id_periodo;
         $c = $request->id_career;
         $file = $request->file('file');
         Excel::import(new StudentImport($p,$c), $file);
-
-        return back()->with('message', 'Importacion de Usuarios Completa');
+        return back() ->with('info', [
+            'status' => $status,
+            'content' => $conent
+        ]);
     }
 }

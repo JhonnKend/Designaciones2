@@ -99,23 +99,132 @@ class DesignationsController extends Controller
         $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
         return view('designations.quotas.components.table_lista_centros_medicos',compact('list_medical_centers','tipos_internado','gestion','periodo'));
     }
-    public function guardar_cupos(Request $request){
+    public function guardar_cupos(Request $request){        
         //Para poder guardar la cantidad de cupos de cada tipo y cada centro medico cant_cupos
-        if($request->res[0] === "med"){
+        if($request->res[0] === "med"){            
             $m = 1;
-            $estado = Designacion::count_cupos_medicos($request->id_centro_salud,$request->ges,$request->per,$m);
-            $num = count($estado);
-            if($num != 0){
+            //revisar si los cupos no estan designados.
+            $estado = Designacion::ver_estado_cupos($request->id_centro_salud,$request->ges,$request->per,$m);
+            if($estado == true){
+                if($request->cant_cupos == 0 ){
+                    $borrar = Designacion::borrar_cupos_cero($request->id_centro_salud,$request->ges,$request->per,$m);
+                    return "La Cantidad de Cupos se actualizo Correctamente";
+                }else{
+                    $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                    if($request->cant_cupos > $cantidad){
+                        $cant = $request->cant_cupos - $cantidad;
+                        for($i = 0; $i < $cant; $i++){
+                            $quotas = new Quotas();
+                            $quotas->id_stable_salud = request ('id_centro_salud');
+                            $quotas->tipe_internship = $m;
+                            $quotas->periodo = request ('per');
+                            $quotas->gestion = request ('ges');
+                            $quotas->status_designation = 0;
+                            $quotas->designation_date = now();
+                            $quotas->user_create = \Auth::user()->id;
+                            $quotas->save();                            
+                        }   return "La Cantidad de Cupos se actualizo Correctamente";                     
+                    }else{
+                        $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                        $cant = $cantidad - $request->cant_cupos;
+                        \DB::table('quotas')            
+                            ->where('quotas.id_stable_salud','=',$request->id_centro_salud)
+                            ->where('quotas.gestion','=',$request->ges)
+                            ->where('quotas.periodo','=',$request->per)
+                            ->where('quotas.tipe_internship','=',$m)
+                            ->orderBy('quotas.id', 'ASC')
+                            ->take($cant)
+                            ->delete();
+                            return "La Cantidad de Cupos se actualizo Correctamente";
+                    }
+                }
+            }
+            
+            //$estado = Designacion::count_cupos_medicos($request->id_centro_salud,$request->ges,$request->per,$m);
+            //$num = count($estado);
+            /*if($num === 0){
                 $cant_c = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
                 $cant = count($cant_c);
                 return $request->cant_cupos;
             }else{
                 return "No se puede Modificar por que hay Estudiantes Designados...";
-            }
+            }*/
         }if($request->res[0] === "enf"){
-            return $request->res[0];
+            $m = 2;
+            //revisar si los cupos no estan designados.
+            $estado = Designacion::ver_estado_cupos($request->id_centro_salud,$request->ges,$request->per,$m);
+            if($estado == true){
+                if($request->cant_cupos == 0 ){
+                    $borrar = Designacion::borrar_cupos_cero($request->id_centro_salud,$request->ges,$request->per,$m);
+                    return "La Cantidad de Cupos se actualizo Correctamente";
+                }else{
+                    $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                    if($request->cant_cupos > $cantidad){
+                        $cant = $request->cant_cupos - $cantidad;
+                        for($i = 0; $i < $cant; $i++){
+                            $quotas = new Quotas();
+                            $quotas->id_stable_salud = request ('id_centro_salud');
+                            $quotas->tipe_internship = $m;
+                            $quotas->periodo = request ('per');
+                            $quotas->gestion = request ('ges');
+                            $quotas->status_designation = 0;
+                            $quotas->designation_date = now();
+                            $quotas->user_create = \Auth::user()->id;
+                            $quotas->save();                            
+                        }   return "La Cantidad de Cupos se actualizo Correctamente";                     
+                    }else{
+                        $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                        $cant = $cantidad - $request->cant_cupos;
+                        \DB::table('quotas')            
+                            ->where('quotas.id_stable_salud','=',$request->id_centro_salud)
+                            ->where('quotas.gestion','=',$request->ges)
+                            ->where('quotas.periodo','=',$request->per)
+                            ->where('quotas.tipe_internship','=',$m)
+                            ->orderBy('quotas.id', 'ASC')
+                            ->take($cant)
+                            ->delete();
+                            return "La Cantidad de Cupos se actualizo Correctamente";
+                    }
+                }
+            }
         }if($request->res[0] === "den"){
-            return $request->res[0];
+            $m = 3;
+            //revisar si los cupos no estan designados.
+            $estado = Designacion::ver_estado_cupos($request->id_centro_salud,$request->ges,$request->per,$m);
+            if($estado == true){
+                if($request->cant_cupos == 0 ){
+                    $borrar = Designacion::borrar_cupos_cero($request->id_centro_salud,$request->ges,$request->per,$m);
+                    return "La Cantidad de Cupos se actualizo Correctamente";
+                }else{
+                    $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                    if($request->cant_cupos > $cantidad){
+                        $cant = $request->cant_cupos - $cantidad;
+                        for($i = 0; $i < $cant; $i++){
+                            $quotas = new Quotas();
+                            $quotas->id_stable_salud = request ('id_centro_salud');
+                            $quotas->tipe_internship = $m;
+                            $quotas->periodo = request ('per');
+                            $quotas->gestion = request ('ges');
+                            $quotas->status_designation = 0;
+                            $quotas->designation_date = now();
+                            $quotas->user_create = \Auth::user()->id;
+                            $quotas->save();                            
+                        }   return "La Cantidad de Cupos se actualizo Correctamente";                     
+                    }else{
+                        $cantidad = Designacion::cant_cupos_registrados($request->id_centro_salud,$request->ges,$request->per,$m);
+                        $cant = $cantidad - $request->cant_cupos;
+                        \DB::table('quotas')            
+                            ->where('quotas.id_stable_salud','=',$request->id_centro_salud)
+                            ->where('quotas.gestion','=',$request->ges)
+                            ->where('quotas.periodo','=',$request->per)
+                            ->where('quotas.tipe_internship','=',$m)
+                            ->orderBy('quotas.id', 'ASC')
+                            ->take($cant)
+                            ->delete();
+                            return "La Cantidad de Cupos se actualizo Correctamente";
+                    }
+                }
+            }
         }
         /*return $cantidad_cupos = Designacion::cnatidad_cupos($request->id_es, $request->per, $request->ges);
         
@@ -317,7 +426,50 @@ class DesignationsController extends Controller
             'gestion.numeric' => 'Debe Seleccionar una Gestion',
             'periodo.numeric' => 'Debe Seleccionar un Periodo',
         ]);
+        $cantidad = Designacion::cantidad_cupos($request->tipo_internado, $request->gestion, $request->periodo);
+        $tipos_internado = InternshipTipes::tipo_internado_view($request->tipo_internado);
         $lista = Designacion::list_students($request->tipo_internado, $request->gestion, $request->periodo);
+        $cantidad_estudiantes = count($lista);
+        $datos_enviar = $request->tipo_internado.'/'.$request->gestion.'/'.$request->periodo;
+        return view("designations.designation.lista_estudiantes",compact('lista','tipos_internado','cantidad','cantidad_estudiantes','datos_enviar'));
+    }
+    public function sorteo_tentativo(Request $request){        
+        $valores = explode("/",$request->datos);
+        \DB::table('quotas')
+            ->where('quotas.tipe_internship', $valores[0])
+            ->where('quotas.gestion', $valores[1])
+            ->where('quotas.periodo', $valores[2])
+            ->update(['confirmado' => NULL,'id_student'=>NULL,'status_designation'=>0]);
+        $datos_enviar = $request->datos;
+        $lista = Designacion::list_students($valores[0], $valores[1], $valores[2]);
+        $numero = count($lista);
+        //return $cantidad = Designacion::cantidad_cupos($valores[0], $valores[1], $valores[2]);
+        
+        for($i = 0; $i < $numero; $i++){
+            $cupo_sorteado = Designacion::cupo_suerte($valores[0], $valores[1], $valores[2]);       
+            $guardar_sorteo =  Quotas::find($cupo_sorteado[0]->id);
+            $guardar_sorteo->designation_date = date("Y-m-d H:i:s");
+            $guardar_sorteo->id_student = $lista[$i]->id;
+            $guardar_sorteo->status_designation = 1;
+            $guardar_sorteo->confirmado = "no";
+            $guardar_sorteo->user_edit = \Auth::user()->id;
+            $guardar_sorteo->update();
+        }
+        $cantidad_estudiantes = count($lista);
+        $tipos_internado = InternshipTipes::tipo_internado_view($valores[0]);
+        $cantidad = Designacion::cantidad_cupos($valores[0], $valores[1], $valores[2]);
+        $lista_estudiantes_sorteo = DEsignacion::lista_sorteada($valores[0], $valores[1], $valores[2]);
+        return view('designations.designation.ver_para_confirmacion_sorteo',compact('datos_enviar','lista_estudiantes_sorteo','cantidad_estudiantes','tipos_internado','cantidad'));
+    }
+    public function confirmar_sorteo_ruta(Request $request){        
+        $valores = explode("/",$request->datos);
+        \DB::table('quotas')
+            ->where('quotas.tipe_internship', $valores[0])
+            ->where('quotas.gestion', $valores[1])
+            ->where('quotas.periodo', $valores[2])
+            ->update(['confirmado' => "si"]);
+            $lista_estudiantes_sorteo = DEsignacion::lista_sorteada($valores[0], $valores[1], $valores[2]);
+        return view('designations.designation.lista_designaciones',compact('lista_estudiantes_sorteo'));
     }
     public function start_student_institute(){
         $list_students = Designacion::internship_draw_list_insti();

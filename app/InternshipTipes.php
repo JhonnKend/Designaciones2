@@ -18,6 +18,11 @@ class InternshipTipes extends Model
             ->get();
             
     }
+    protected static function tipo_internado_view($t){
+        return \DB::table('internation_types')
+        ->where('internation_types.id', '=', $t)
+        ->get();
+    }
     protected static function edit_internship_types($id){
         return \DB::table('internation_types')
             ->where('internation_types.id','=',$id)
