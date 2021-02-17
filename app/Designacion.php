@@ -43,7 +43,7 @@ class Designacion extends Model
             ->where('id_gestion','=',$id)
             ->get([
                 'periods.period','periods.id as id_periodo',
-                'enable_periods.date_start','enable_periods.date_end','enable_periods.id as id_e_p',
+                'enable_periods.inicio_rote','enable_periods.fin_rote','enable_periods.date_start','enable_periods.date_end','enable_periods.id as id_e_p',
                 'gestion.id as id_gestion','gestion.gestion',
             ]);
     }    

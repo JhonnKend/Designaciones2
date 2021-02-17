@@ -665,4 +665,14 @@ class DesignationsController extends Controller
     public function cargar_fechas_periodos(Request $request){
         return $periodo_editar = Enable_periods::buscar_periodo($request->id_d_e);
     }
+    public function sumar_fechas(Request $request){
+        return date("Y/m/d",strtotime($request->fecha."+ 3 month")); 
+    }
+    public function guardar_fechas_nuevas(Request $request){
+        $fecha_fin = date("Y/m/d",strtotime($request->fecha_inicio."+ 3 month"));
+        \DB::table('enable_periods')
+            ->where('enable_periods.id', $request->id_periodo)
+            ->update(['inicio_rote' => $request->fecha_inicio,'fin_rote'=>$fecha_fin]);
+        return "Las fechas se Actualizaron Correctamente";
+    }
 }

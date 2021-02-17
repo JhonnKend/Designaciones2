@@ -176,7 +176,7 @@ class StudentController extends Controller
                 $new_student->user_create = \Auth::user()->id;
                 $new_student->save();
         }
-		return redirect()->route('index_students')
+		return redirect()->route('register_new_student')
             ->with('info', [
                 'status' => $status,
                 'content' => $conent
@@ -349,7 +349,6 @@ class StudentController extends Controller
 
         }
     }
-
 
     public function delete_students(Request $request)
     {   

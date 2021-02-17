@@ -7,9 +7,9 @@
                 <div class="text-xs font-weight-bold text-uppercase mb-1">Periodo {{$add->period}}</div>
                 <div class="mt-2 mb-0 text-muted text-xs">
                     <span class="text-success">Del</span>
-                    <span>{{ $add->date_start }}</span>
+                    <span>{{ $add->inicio_rote }}</span>
                     <span class="text-success"> al</span>
-                    <span>{{ $add->date_end }}</span><span class="mr-2"> </i>
+                    <span>{{ $add->fin_rote }}</span><span class="mr-2"> </i>
                         <!--button type="button" class="btn btn-outline-info btn-sm"> <i class="fas far fa-edit"></i> </button-->
                         <button type="button" value="{{ $add->id_e_p }}" class="btn btn-outline-info btn-sm cargar_datos_periodo" data-toggle="modal" data-target="#exampleModal" id="#myBtn">
                             <i class="fas far fa-edit"></i>
@@ -66,7 +66,9 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="">
+            <form action="{{ route('guardar_fechas_nuevas') }}" method="POST" class="guardar_datos">
+                @csrf 
+                <input type="hidden" name="id_periodo" id="id_periodo" value="">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Fechas de Rote:</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -91,7 +93,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>

@@ -306,4 +306,6 @@ Route::middleware(['auth'])->group(function(){
     Route::post('cargar_datos_nueva_designacion','DesignationsController@cargar_datos_nueva_designacion')->name('cargar_datos_nueva_designacion')->middleware('permission:cargar_datos_nueva_designacion');
     //Rutas para modificar las fechas de los periodos    
     Route::post('cargar_fechas_periodos','DesignationsController@cargar_fechas_periodos')->name('cargar_fechas_periodos')->middleware('permission:cargar_fechas_periodos');
+    Route::post('guardar_fechas_nuevas','DesignationsController@guardar_fechas_nuevas')->name('guardar_fechas_nuevas')->middleware('permission:guardar_fechas_nuevas');
+    Route::post('sumar_fechas','DesignationsController@sumar_fechas')->name('sumar_fechas')->middleware('permission:sumar_fechas');
 });

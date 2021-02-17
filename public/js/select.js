@@ -3,7 +3,32 @@ $(function(){
         $("#global_content").html('')
         $("#global_content").load($(this).attr('href'))
         return false;
-    });  
+    });
+    $(document).on('submit','.guardar_datos',function(e){
+        var formData = new FormData($(this)[0]);
+        frutas = []
+        $('.name_form').each(function(){
+            aux = $(this).attr("name")
+            frutas.push(aux)
+        })
+        $.ajaxSetup({
+            header:$('meta[name="_token"]').attr('content')
+        })
+        e.preventDefault(e)
+        $.ajax({
+            type:$(this).attr('method'),
+            url:$(this).attr('action'),
+            data:formData,
+            contentType: false,
+            processData: false,
+            success:function(data){                
+                alert(data)
+            },
+            error:function(data){
+                function_error(data)
+            }
+        })
+    })
     $(document).on('click','.cargar_datos_periodo',function(e){        
         e.preventDefault(e)
         $.ajax({
@@ -13,6 +38,7 @@ $(function(){
         	success:function(data){
                 $('#fecha_i').val(data[0].date_start);
                 $('#fecha_f').val(data[0].date_end);
+                $('#id_periodo').val(data[0].id);
                 return false;
         	},
         	error:function(data){
@@ -34,18 +60,18 @@ $(function(){
     })
     $(document).on('change','.cambiar_fecha',function(e){
         var fecha = $('#fecha_i').val();
-        function_error_asdsad(fecha)
-    })
-    function function_error_asdsad(data){
-        fecha = new Date(data)
-        fecha.setMonth(fecha.getMonth() + 4)  
-        let day = fecha.getDate()
-        let month = fecha.getMonth()
-        let year = fecha.getFullYear()
-        fecha_fin = `${day}/${month}/${year}`
-        console.log(fecha_fin)
-        $('#fecha_f').val(fecha_fin);
-    }   
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'sumar_fechas',
+        	data:{fecha:fecha,_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $("#fecha_f").val(data)
+        	},
+        	error:function(data){
+        	}
+        })
+    })      
     $(document).on('change','.load_medical_centers',function(e){
         e.preventDefault(e)
         $.ajax({
