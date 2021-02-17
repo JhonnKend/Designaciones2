@@ -4,6 +4,21 @@ $(function(){
         $("#global_content").load($(this).attr('href'))
         return false;
     });  
+    $(document).on('click','.cargar_datos_periodo',function(e){        
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'cargar_fechas_periodos',
+        	data:{id_d_e:$(this).attr('value'),_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $('#fecha_i').val(data[0].date_start);
+                $('#fecha_f').val(data[0].date_end);
+                return false;
+        	},
+        	error:function(data){
+        	}
+        })
+    });
     $(document).on('change','.change_load_view',function(e){
         e.preventDefault(e)
         $.ajax({
@@ -17,6 +32,20 @@ $(function(){
         	}
         })
     })
+    $(document).on('change','.cambiar_fecha',function(e){
+        var fecha = $('#fecha_i').val();
+        function_error_asdsad(fecha)
+    })
+    function function_error_asdsad(data){
+        fecha = new Date(data)
+        fecha.setMonth(fecha.getMonth() + 4)  
+        let day = fecha.getDate()
+        let month = fecha.getMonth()
+        let year = fecha.getFullYear()
+        fecha_fin = `${day}/${month}/${year}`
+        console.log(fecha_fin)
+        $('#fecha_f').val(fecha_fin);
+    }   
     $(document).on('change','.load_medical_centers',function(e){
         e.preventDefault(e)
         $.ajax({
@@ -299,6 +328,22 @@ $(function(){
         	}
         })
     });
+    $(document).on('click','.cargar_datos_editar',function(e){
+        e.preventDefault(e)
+        $.ajax({
+        	type:'POST',
+        	url:'cargar_datos_nueva_designacion',
+        	data:{datos_enviar:$("#datos_enviar").val(),_token:$('meta[name="csrf-token"]').attr('content')},
+        	success:function(data){
+                $(".editar_vista").remove()
+                document.getElementById("btn_guardar").disabled = false;
+                $("#cargar_vista_editar").html(data)
+                return false;
+        	},
+        	error:function(data){
+        	}
+        })
+    });
     $(document).on('click','.delete_function',function(e){
         e.preventDefault(e)
         $.ajax({
@@ -332,6 +377,32 @@ $(function(){
             processData: false,
             success:function(data){                
                 $("#global_content").html(data)                                   
+            },
+            error:function(data){
+                function_error(data)
+            }
+        })
+    })
+    $(document).on('submit','.cargar_listas',function(e){
+        var formData = new FormData($(this)[0]);
+        frutas = []
+        $('.name_form').each(function(){
+            aux = $(this).attr("name")
+            frutas.push(aux)
+        })
+        $.ajaxSetup({
+            header:$('meta[name="_token"]').attr('content')
+        })
+        e.preventDefault(e)
+        $.ajax({
+            type:$(this).attr('method'),
+            url:$(this).attr('action'),
+            data:formData,
+            contentType: false,
+            processData: false,
+            success:function(data){   
+                //$(".table_cargar").remove()
+                $("#cargar_datos").html(data)
             },
             error:function(data){
                 function_error(data)

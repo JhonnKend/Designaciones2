@@ -9,7 +9,12 @@
                     <span class="text-success">Del</span>
                     <span>{{ $add->date_start }}</span>
                     <span class="text-success"> al</span>
-                    <span>{{ $add->date_end }}</span><span class="mr-2"> </i><a type="button" class="btn btn-info mb-1 btn-sm"> <i class="fas far fa-edit"></i> </a></span>
+                    <span>{{ $add->date_end }}</span><span class="mr-2"> </i>
+                        <!--button type="button" class="btn btn-outline-info btn-sm"> <i class="fas far fa-edit"></i> </button-->
+                        <button type="button" value="{{ $add->id_e_p }}" class="btn btn-outline-info btn-sm cargar_datos_periodo" data-toggle="modal" data-target="#exampleModal" id="#myBtn">
+                            <i class="fas far fa-edit"></i>
+                        </button>
+                    </span>
                 </div> <br>
                 <div class="text-xs font-weight-bold text-uppercase mb-1">Registro de Estudiantes</div>
                 <div class="mt-2 mb-0 text-muted text-xs">
@@ -58,11 +63,44 @@
         </form> <br>
     </div>
 </div>
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Fechas de Rote:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Fecha Inicio:</label>
+                                <input class="form-control cambiar_fecha" type="date" value="" name="fecha_inicio" id="fecha_i">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Fecha Fin:</label>
+                                <input class="form-control" type="text" value="" name="fecha_fin" id="fecha_f" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
-    $(function () {
-      $('#periodo').select2({
-          theme: 'bootstrap4'
-        })    
-    })
-    </script>
+$(function () {
+    $('#periodo').select2({
+        theme: 'bootstrap4'
+    })    
+})
+</script>

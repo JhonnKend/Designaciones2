@@ -10,13 +10,13 @@
                     <th scope="col">NRO.</th>
                     <th scope="col">C.I.</th>
                     <th scope="col">ESTUDIANTE</th>
-                    <th scope="col">ESTABLECIMIENTO SALUD DESIGNADO</th>
+                    <th scope="col">E. SALUD</th>
                     <th>ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $a = 1 ?>
-                @foreach($lista_estudiantes_sorteo as $d)
+                @foreach($lista_estudiantes_designados as $d)
                     <tr>
                         <td>{{ $a++ }}</td>
                         <td>{{ $d->ci }}</td>

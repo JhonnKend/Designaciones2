@@ -64,7 +64,7 @@
     @endslot
     @slot('action')
         @can('create_internship_types')
-            <!--a href="{{ route('create_internship_types') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Tipo</a--> 
+            <!--a href="{{ route('create_internship_types') }}" class="btn btn-sms btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Tipo</a--> 
         @endcan
     @endslot
 @endcomponent

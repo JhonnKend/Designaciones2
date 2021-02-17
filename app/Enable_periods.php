@@ -18,4 +18,9 @@ class Enable_periods extends Model
         'status_',
 
     ];
+    protected static function buscar_periodo($id){
+        return \DB::table('enable_periods')
+            ->where('enable_periods.id','=',$id)
+            ->get();
+    }
 }

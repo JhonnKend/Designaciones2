@@ -43,11 +43,58 @@ class Designacion extends Model
             ->where('id_gestion','=',$id)
             ->get([
                 'periods.period','periods.id as id_periodo',
-                'enable_periods.date_start','enable_periods.date_end',
+                'enable_periods.date_start','enable_periods.date_end','enable_periods.id as id_e_p',
                 'gestion.id as id_gestion','gestion.gestion',
             ]);
     }    
     protected static function list_students($t, $g, $p){
+        $sql = 'SELECT s.name,s.ap_pat,s.ap_mat,s.id,s.ci,q.id as id_d,q.confirmado,es.name_estable_salud FROM enable_periods ep 
+                INNER JOIN student s
+                    ON ep.id = s.id_date_enabled
+                INNER JOIN career c
+                    ON c.id = s.carrer_id
+                LEFT JOIN quotas q
+                    ON q.id_student = s.id
+                LEFT JOIN estable_saluds es
+		            ON es.id = q.id_stable_salud
+            WHERE ep.id_gestion = ? and ep.id_period = ? and c.type_internation = ?';
+        return \DB::select($sql,array($g,$p,$t));
+        return \DB::table('enable_periods')
+            ->join('student','student.id_date_enabled','=','enable_periods.id')
+            ->join('career','career.id','=','student.carrer_id')
+            ->leftjoin('quotas','quotas.id_student','=','student.id')
+            ->join('estable_saluds','estable_saluds.id','=','quotas.id_stable_salud')
+            ->where('enable_periods.id_gestion','=',$g)
+            ->where('enable_periods.id_period','=',$p)
+            ->where('career.type_internation','=',2)
+            ->where('student.type','=',1)
+            ->get([
+                'student.name','student.ap_pat','student.ap_mat','student.id','student.ci',
+                'quotas.id AS id_d','quotas.confirmado',
+                'estable_saluds.name_estable_salud'
+            ]);
+        return \DB::table('student')
+            ->join('enable_periods','student.id_date_enabled','=','enable_periods.id')
+            ->join('career','career.id','=','student.carrer_id')
+            ->where('enable_periods.id_gestion','=',$g)
+            ->where('enable_periods.id_period','=',$p)
+            ->where('career.type_internation','=',$t)
+            ->where('student.type','=',1)
+            ->get([
+                'student.name','student.ap_pat','student.ap_mat','student.id','student.ci',
+                //'quotas.id AS id_d',
+            ]);
+        return \DB::table('student')
+            ->join('career','career.id','=','student.carrer_id')
+            ->join('enable_periods','student.id_date_enabled','=','enable_periods.id')
+            ->leftJoin('quotas','quotas.id_student','=','student.id')
+            ->where('enable_periods.id_gestion','=',$g)
+            ->where('enable_periods.id_period','=',$p)
+            ->where('career.type_internation','=',$t)
+            ->where('quotas.id_student','=',NULL)
+            ->where('student.type','=',1)
+            ->get();
+        /*
         return \DB::table('student')
             ->join('career','career.id','=','student.carrer_id')
             ->join('enable_periods','student.id_date_enabled','=','enable_periods.id')
@@ -61,7 +108,7 @@ class Designacion extends Model
                 'student.name','student.ap_pat','student.ap_mat','student.id','student.ci',
                 'quotas.id AS id_d',
             ]);
-        /*\DB::table('student')    
+        \DB::table('student')    
             ->leftJoin('quotas','quotas.id_student','=','student.id')
             ->where('type','=',1)
             ->where('quotas.id_student','=',NULL)
@@ -342,4 +389,40 @@ class Designacion extends Model
             ->where('quotas.tipe_internship','=',$m)
             ->delete();
         }
+    protected static function lista_estudiantes_designacion($t,$g,$p){
+        return \DB::table('quotas')
+            ->join('student','student.id','=','quotas.id_student')
+            ->join('estable_saluds','estable_saluds.id','=','quotas.id_stable_salud')
+            ->where('quotas.gestion','=',$g)
+            ->where('quotas.periodo','=',$p)
+            ->where('quotas.tipe_internship','=',$t)
+            ->where('quotas.status_designation','=',1)
+            ->where('quotas.confirmado','=','si')            
+            ->get([
+                'quotas.id',
+                'student.name','student.ap_pat','student.ap_mat','student.ci','student.id AS id_estudiante',
+                'estable_saluds.name_estable_salud'
+            ]);
+    }
+    protected static function cupos_disponibles($t,$g,$p){
+        return \DB::table('quotas')
+            ->join('estable_saluds','estable_saluds.id','=','quotas.id_stable_salud')
+            ->join('municipalities','municipalities.id','=','estable_saluds.id_muni')
+            ->where('quotas.gestion','=',$g)
+            ->where('quotas.periodo','=',$p)
+            ->where('quotas.tipe_internship','=',$t)
+            ->where('quotas.status_designation','=',0)
+            ->where('quotas.id_student','=',NULL)
+            ->get([
+                'quotas.gestion','quotas.periodo','quotas.tipe_internship','quotas.status_designation','quotas.id_student','quotas.id',
+                'estable_saluds.name_estable_salud',
+                'municipalities.name_municipality',
+
+            ]);
+    }
+    protected static function buscar_cupos($id){
+        return \DB::table('quotas')
+            ->where('quotas.id','=',$id)
+            ->get();
+    }
 }

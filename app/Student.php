@@ -162,4 +162,16 @@ class Student extends Model
             'student.created_at',
         ]);
     }
+    protected static function ver_lugar_estudio($id){
+        return \DB::table('student')
+            ->join('career','career.id','=','student.carrer_id')
+            ->join('faculties','faculties.id','=','career.faculty_id')
+            ->join('univeridads','univeridads.id','=','faculties.id_university')
+            ->where('student.id','=',$id)
+            ->get([
+                'career.name_career',
+                'faculties.name_faculty',
+                'univeridads.name_university'
+            ])->first();
+    }
 }

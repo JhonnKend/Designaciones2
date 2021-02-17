@@ -15,24 +15,25 @@
             </thead>
             <tbody>
                 <?php $a = 1 ?>
-                @foreach($lista as $d)
+                @forelse($lista as $d)
                     <tr>
                         <td>{{ $a++ }}</td>
                         <td>{{ $d->ci }}</td>
-                        <td>{{ $d->name }} {{ $d->ap_pat }} {{ $d->ap_mat }}</td>
-                        @if( $d->id_d )
-                        <td>{{ $d->id_d }}</td>
+                        <td>{{ $d->name }} {{ $d->ap_pat }} {{ $d->ap_mat }}</td>   
+                        @if($d->id_d)                  
+                            <td> {{ $d->name_estable_salud }} </td>
                         @else
-                        <td> Sin Designacion </td>
+                            <td class="text-danger"> Sin Designacion </td>
                         @endif
                     </tr>
-                @endforeach
+                @empty
+                @endforelse
             </tbody>
         </table>
     </div>
     <div class="card-body">
         <form action="{{ route('sorteo_tentativo') }}" method="POST" class="save_date">
-            @csrf  
+            @csrf              
             <input type="hidden" name="datos" value="{{ $datos_enviar }}">
             <h6 class="card-title text-success"> DATOS PARA EL SORTEO</h6>
             <div class="row">
@@ -57,7 +58,15 @@
             </div>
             <div class="row">
                 <div class="col-md-6 align-content-center">
-                    <button type="submit" class="btn btn-success">Realizar Sorteo</button>
+                    @if(isset($lista[0]->id_d))
+                        @if($lista[0]->confirmado == "si")
+                            <button type="button" class="btn btn-primary"> Ver Lista de Designaciones</button>
+                        @else
+                            <button type="button" class="btn btn-danger confirmar_sorteo">Confirmar Sorteo</button>
+                        @endif
+                    @else
+                        <button type="submit" class="btn btn-success">Realizar Sorteo</button>
+                    @endif
                 </div>            
             </div>
         </form>

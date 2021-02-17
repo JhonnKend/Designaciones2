@@ -1,41 +1,64 @@
 @component('components.index_card')
     @slot('title')
-        Lista de Alumnos Universitarios Desigandos
+        Lista de Alumnos Universitarios Desigandos asd 
     @endslot    
     @slot('bodycard')
+    <form action="{{ route('ver_lista_designaciones_') }}" method="POST" class="cargar_listas">
+        @csrf  
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="tipo_internado" id="tipo_internado" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione tipo de Internado</option>
+                        @foreach($tipos_internado as $t)
+                            <option value="{{$t->id}}">{{$t->name_type}}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="gestion" id="gestion" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione una Gestion</option>
+                        @foreach($gestion as $g)
+                            <option value="{{$g->id}}">{{$g->gestion}}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="periodo" id="periodo" class="change_select form-control select2bs4 select2-danger name_form">
+                        <option value="">Seleccione un Periodo</option>
+                        @foreach($periodo as $p)
+                            <option value="{{$p->id}}">{{$p->period}}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger" id=""></small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success btn-block"> <i class="fas fa-search"></i> Buscar Estudiantes</button>
+            </div>
+        </div>
+    </form> <br>
     <div class="table-responsive p-3">
             <table id="example" class="table align-items-center table-flush">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">NRO.</th>
+                        <th scope="col">C.I.</th>
                         <th scope="col">ESTUDIANTE</th>
-                        <th scope="col">ESTADO</th>
-                        <th scope="col"> ACCION </th>
+                        <th scope="col">E.SALUD</th>
+                        <th scope="col">ACCION</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php $a = 1 ?>
-                    @foreach($list_students as $d)
-                        <tr>
-                            <td>{{ $a++ }}</td>
-                            <td>{{ $d->name }} {{ $d->ap_pat }} {{ $d->ap_mat }}</td>
-                            @if($d->status_designation === 1)
-                                <td class="text-success">Designado</td>
-                                <td>
-                                    @can('view_designation')<a href="{{ route('view_designation') }}" class="btn btn-primary btn-sm show_function"  value="{{ $d->id_student }}" title="Ver Designacion" data-original-title="More Color"> <i class="fas fa-trash-altt"></i> Ver Designacion</a>@endcan                                    
-                                </td>
-                            @else
-                                <td class="text-danger">No Designado</td>                                
-                                <td class="text-danger">No Designado</td>
-                                <!--td>
-                                    @can('start_designate')<a href="{{ route('start_designate') }}" class="btn btn-success btn-sm edit_function"  value="{{ $d->id_student }}" title="Iniciar Designacion" data-original-title="More Color"> <i class="fas fa-trash-altt"></i> Designar</a>@endcan
-                                </td-->
-                            @endif
-
-                        </tr>
-                    @endforeach
+                <tbody id="cargar_datos">                    
                 </tbody>
             </table>
+            
         </div>
         @endslot
         @slot('action')
@@ -83,3 +106,10 @@ $(function(){
     });
 } );
 </script>
+<script>
+    $(function () {
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    })
+    </script>

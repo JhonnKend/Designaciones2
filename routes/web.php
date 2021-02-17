@@ -208,6 +208,9 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('search_students_uni_', 'DesignationsController@search_students_uni_')->name('search_students_uni_')->middleware('permission:search_students_uni_');
 
+    //para poder ver la lista de designaciones de acuerdo a tipo gestion y periodo
+    Route::post('ver_lista_designaciones_', 'DesignationsController@ver_lista_designaciones_')->name('ver_lista_designaciones_')->middleware('permission:ver_lista_designaciones_');
+
     Route::post('start_student_institute', 'DesignationsController@start_student_institute')->name('start_student_institute')->middleware('permission:start_student_institute');
 
     Route::get('internship_draw','DesignationsController@index_internship_draw')->name('index_internship_draw')->middleware('permission:index_internship_draw');
@@ -293,5 +296,14 @@ Route::middleware(['auth'])->group(function(){
 
 
     Route::post('import-list-excel','StudentController@import_students')->name('users.import.excel');
-
+    //RUTA PARA EDITAR LAS DESIGNACIONES
+    Route::post('editar_designacion','DesignationsController@editar_designacion')->name('editar_designacion')->middleware('permission:editar_designacion');
+    //RUTA PARA PODER VER LAS DESIGNACIONES
+    Route::post('ver_designacion','DesignationsController@ver_designacion')->name('ver_designacion')->middleware('permission:ver_designacion');
+    //RUTA PARA GUARDAR LOS CAMBIO DE LA DESIGNACION DE UN ESTUDIANTE 
+    Route::post('guardar_nueva_designacion','DesignationsController@guardar_nueva_designacion')->name('guardar_nueva_designacion')->middleware('permission:guardar_nueva_designacion');
+    //Ruta para cargar los datos de la nueva designacion
+    Route::post('cargar_datos_nueva_designacion','DesignationsController@cargar_datos_nueva_designacion')->name('cargar_datos_nueva_designacion')->middleware('permission:cargar_datos_nueva_designacion');
+    //Rutas para modificar las fechas de los periodos    
+    Route::post('cargar_fechas_periodos','DesignationsController@cargar_fechas_periodos')->name('cargar_fechas_periodos')->middleware('permission:cargar_fechas_periodos');
 });

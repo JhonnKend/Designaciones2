@@ -14,6 +14,9 @@ use App\Gestion;
 use App\Periods;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DesignationsExport;
+use DateMedicalCenter;
+use EnablePeriods;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Descriptor\Descriptor;
 
 class DesignationsController extends Controller
@@ -188,7 +191,7 @@ class DesignationsController extends Controller
                 }
             }
         }if($request->res[0] === "den"){
-            $m = 3;
+            $m = 5;
             //revisar si los cupos no estan designados.
             $estado = Designacion::ver_estado_cupos($request->id_centro_salud,$request->ges,$request->per,$m);
             if($estado == true){
@@ -315,14 +318,21 @@ class DesignationsController extends Controller
             ->get();
     }
 
-    // Function for select insti or uni list 
+    // Function for select insti or uni list as
     public function index_internship_draw(){
         return view('designations.designation.start_lists');
         
-    }
+    }    
     public function list_student_univesity(){
-        $list_students = Designacion::internship_draw_list_1();
-        return view('designations.internship_draw.index',compact('list_students'));
+        $status = 'success';
+        $conent = 'Datos Cargados Correctamente';  
+        $tipos_internado = \DB::table('internation_types')->where('internation_types.level_ac','=',1)->get();
+        $gestion = Gestion::get();
+        $periodo = Periods::get();
+        return view('designations.internship_draw.index',compact('tipos_internado','gestion','periodo'))->with('info', [
+            'status' => $status,
+            'content' => $conent
+        ]);;
     }
     public function list_student_institute(){
         $list_students = Designacion::internship_draw_list_insti_1();
@@ -612,9 +622,47 @@ class DesignationsController extends Controller
         $date_enabled->user_edit = \Auth::user()->id;
         $date_enabled->update();
         return redirect()->route('index_enable_periods')
-        ->with('info', [
+        ->with('info', [ 
             'status' => $status,
             'content' => $conent
         ]);
+    }
+    /* funcion para poder ver la lista de estudinates designados de acuerdo a tipo gestion y periodo */
+    public function ver_lista_designaciones_(Request $request){
+        $lista_estudiantes_designados = Designacion::lista_estudiantes_designacion($request->tipo_internado,$request->gestion,$request->periodo);
+        return view('designations.internship_draw.lista_designaciones',compact('lista_estudiantes_designados'));
+    }
+    //funcion para editar la designacion
+    public function ver_designacion(Request $request){
+        $datos_estudiante = Designacion::student_view($request->id);
+        $lugar_estudio = Student::ver_lugar_estudio($request->id);
+        $centro_salud = EstableSalud::lugar_designado($request->id);
+        $datos_enviar = $centro_salud->tipe_internship.'/'.$centro_salud->gestion.'/'.$centro_salud->periodo;
+        return view('designations.designation.ver_designacion',compact('datos_enviar','datos_estudiante','lugar_estudio','centro_salud'));
+    }
+    public function editar_designacion(Request $request){         
+        $datos_estudiante = Designacion::student_view($request->id);
+        $lugar_estudio = Student::ver_lugar_estudio($request->id);
+        $centro_salud = EstableSalud::lugar_designado($request->id);
+        $datos_enviar = $centro_salud->tipe_internship.'/'.$centro_salud->gestion.'/'.$centro_salud->periodo;
+        return view('designations.designation.editar_designacion',compact('datos_enviar','datos_estudiante','lugar_estudio','centro_salud'));
+    }
+    public function cargar_datos_nueva_designacion(Request $request){
+        $valores = explode("/",$request->datos_enviar);
+        $cupos_disponibles = Designacion::cupos_disponibles($valores[0],$valores[1],$valores[2]);
+        return view('designations.designation.cargar_lista_editar_designacion',compact('cupos_disponibles'));
+    }
+    public function guardar_nueva_designacion(Request $request){
+        $datos_estudiante = Designacion::buscar_cupos($request->id_cupo);
+        \DB::table('quotas')
+            ->where('quotas.id', $request->id_cupo)
+            ->update(['confirmado' => NULL,'id_student'=>NULL,'status_designation'=>0]);
+        \DB::table('quotas')
+            ->where('quotas.id', $request->cupo_disponible)
+            ->update(['confirmado' => 'si','id_student'=>$datos_estudiante[0]->id_student,'status_designation'=>1,'user_edit'=>\Auth::user()->id]);
+    }
+    //funcion para cargar fechas de los periodos para su edicion.
+    public function cargar_fechas_periodos(Request $request){
+        return $periodo_editar = Enable_periods::buscar_periodo($request->id_d_e);
     }
 }
