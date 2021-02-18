@@ -74,7 +74,7 @@
 </div>
 <div class="row center-now">
     <div class="col-md-12">
-        <h4>VILLAZON</h4>
+        <h4>{{ strtoupper($dates->name_red) }}</h4>
     </div>
 </div>
 <div class="row footer_firm">
