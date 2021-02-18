@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designacion extends Model
 {
+    //funcion para devolver las fechas de la duracion del rote inicio y fin
+    protected static function fechas_inicio_fin($id){
+        return \DB::table('student')
+            ->join('enable_periods','enable_periods.id','=','student.id_date_enabled')
+            ->where('student.id','=',$id)
+            ->get([
+                'enable_periods.inicio_rote','enable_periods.fin_rote',
+            ])->first();
+    }
     protected static function lista_sorteada($tipo, $gestion, $periodo){
         return \DB::table('quotas')
             ->join('student','student.id','=','quotas.id_student')
@@ -240,6 +249,7 @@ class Designacion extends Model
             //->join('quotas AS q','q.id_stable_salud','=','estable_saluds.id')
             ->join('estable_saluds AS q','q.id','=','quotas.id_stable_salud')
             ->join('municipalities','municipalities.id','=','q.id_muni')
+            ->join('cod_reds','cod_reds.id','=','municipalities.cod_red')
             ->join('internation_types','internation_types.id','=','quotas.tipe_internship')
             ->where('quotas.id_student','=',$id)
             ->get([
@@ -250,7 +260,8 @@ class Designacion extends Model
                 'q.name_estable_salud',
                 'municipalities.nombre_red',
                 'municipalities.name_municipality',
-                'internation_types.name_type'
+                'internation_types.name_type',
+                'cod_reds.name_red'
 
             ])->first();
         }elseif($ver->carrer_id === 1){
@@ -425,4 +436,39 @@ class Designacion extends Model
             ->where('quotas.id','=',$id)
             ->get();
     }
-}
+    protected static function autoridades_certificado(){
+        return \DB::table('autoridades')
+            ->join('tipo_autoridades','tipo_autoridades.id','=','autoridades.cargo_autoridad')
+            ->where('autoridades.cargo_autoridad','=',1)
+            ->where('autoridades.status_gestion','=',1)
+            ->get()->first();
+    }
+    protected static function autoridades_memorandum(){
+        return \DB::table('autoridades')
+            ->join('tipo_autoridades','tipo_autoridades.id','=','autoridades.cargo_autoridad')
+            ->where('autoridades.cargo_autoridad','=',2)
+            ->where('autoridades.status_gestion','=',1)
+            ->get([
+                'autoridades.id','autoridades.nombre_autoridad','autoridades.cargo_autoridad AS ca',
+                'tipo_autoridades.cargo_autoridad',
+            ])->first();
+    }protected static function autoridades_memorandum1(){
+        return \DB::table('autoridades')
+            ->join('tipo_autoridades','tipo_autoridades.id','=','autoridades.cargo_autoridad')
+            ->where('autoridades.cargo_autoridad','=',3)
+            ->where('autoridades.status_gestion','=',1)
+            ->get([
+                'autoridades.id','autoridades.nombre_autoridad','autoridades.cargo_autoridad AS ca',
+                'tipo_autoridades.cargo_autoridad',
+            ])->first();
+    }
+    protected static function autoridades_memorandum2(){
+        return \DB::table('autoridades')
+            ->join('tipo_autoridades','tipo_autoridades.id','=','autoridades.cargo_autoridad')
+            ->where('autoridades.cargo_autoridad','=',4)
+            ->where('autoridades.status_gestion','=',1)
+            ->get([
+                'autoridades.id','autoridades.nombre_autoridad','autoridades.cargo_autoridad AS ca',
+                'tipo_autoridades.cargo_autoridad',
+            ])->first();
+    }}

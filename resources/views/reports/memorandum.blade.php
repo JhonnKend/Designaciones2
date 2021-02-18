@@ -46,7 +46,7 @@
     <div class="row abajo">
         <div class="col-md-12">
             <p>
-            Por disposición del director, Jefatura de planificación y Proyectos, Área de Capacitación y Acreditación Profesional del Servicio Departamental de Salud Potosí, Tenemos el agrado de comunicarle que en cumplimiento del <b>Decreto Supremo 26217</b> del <b>SERVICIO SOCIAL DE SALUD OBLIGATORIO</b>, Ud. ha sido designado como <b>INTERNO (A) DE {{ strtoupper($dates->name_type) }}</b> al Centro de Salud   <b>"{{ strtoupper($dates->name_estable_salud) }}"</b> del municipio de {{ strtoupper($dates->name_municipality) }} perteneciente a la Coordinación de <b style="color:red">Red Ocuri</b> , por el lapso de TRES MESES a partir de la fecha.
+            Por disposición del director, Jefatura de planificación y Proyectos, Área de Capacitación y Acreditación Profesional del Servicio Departamental de Salud Potosí, Tenemos el agrado de comunicarle que en cumplimiento del <b>Decreto Supremo 26217</b> del <b>SERVICIO SOCIAL DE SALUD OBLIGATORIO</b>, Ud. ha sido designado como <b>INTERNO (A) DE {{ strtoupper($dates->name_type) }}</b> al Centro de Salud   <b>"{{ strtoupper($dates->name_estable_salud) }}"</b> del municipio de {{ strtoupper($dates->name_municipality) }} perteneciente a la Coordinación de Red <b> {{ strtoupper($dates->name_red) }} </b> , por el lapso de TRES MESES a partir de la fecha.
             </p>
         </div>
     </div>
@@ -56,23 +56,30 @@
 </div>
 <div class="row firmas">
     <div class="col-md-3">
-        <p>Dr. Carlos Aramayo Arancibia</p>
-        <p> <b>ENCARAGADO DEL AREA DE CAPACITACION</b> </p>
-        <p> <b>Y ACREDITACION PROFESIONAL</b> </p>
-        <p> <b>SEDES POTOSI</b> </p>
+        @if(isset($autoridad))
+        <p>{{ $autoridad->nombre_autoridad }}</p>   
+        <p> <b>{{ $autoridad->cargo_autoridad }}</b> </p>     
+        @else
+        <p>Registre Autoridad</p>
+        @endif        
     </div>
     <div class="col-md-6">
-        <p>Dr. Ricardo Llanos Arandia</p>
-        <p> <b>JEFE DE UNIDAD Y PLANIFICACION Y</b> </p>
-        <p> <b>PROYECTOS SEDES POTOSI</b> </p>
+        @if(isset($autoridad1))
+        <p>{{ $autoridad1->nombre_autoridad }}</p>        
+        @else
+        <p>Registre Autoridad</p>
+        @endif
+        <p> <b>{{ $autoridad1->cargo_autoridad }}</b> </p>  
     </div>
 </div>
 <div class="row firmass">
     <div class="col-md-1">
-        <p>Dr. Carlos Aramayo Arancibia</p>
-        <p> <b>ENCARAGADO DEL AREA DE CAPACITACION</b> </p>
-        <p> <b>Y ACREDITACION PROFESIONAL</b> </p>
-        <p> <b>SEDES POTOSI</b> </p>
+        @if(isset($autoridad2))
+            <p>Vº.Bº {{ $autoridad2->nombre_autoridad }}</p>        
+        @else
+        <p>Registre Autoridad</p>
+        @endif
+        <p> <b>{{ $autoridad2->cargo_autoridad }}</b> </p>  
     </div>
 </div>
 <style>

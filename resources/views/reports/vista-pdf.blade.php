@@ -79,12 +79,12 @@
 </div>
 <div class="row footer_firm">
     <div class="col-md-12">
-        Juan Eddy Salguero Gómez
+        {{ $autoridad->nombre_autoridad }}
     </div>
 </div>
 <div class="row footer_firm2">
     <div class="col-md-12">
-        DIRECTOR TECNICO SEDES POTOSI
+        {{ $autoridad->cargo_autoridad }}
     </div>
 </div>
 <div class="row footer_firm1">
@@ -130,13 +130,15 @@
     }
     .footer_firm{
         text-align: center;
-        margin-top: 150px;
+        margin-top: 100px;
+        padding-top: 100px; 
     }
     .footer_firm2{
-        text-align: center;        
+        text-align: center;  
+        padding-top: 10px;      
     }
     .footer_firm1{
-        margin-top: 30px;
+        padding-top: 50px;
         text-align: center;        
     }
 </style>

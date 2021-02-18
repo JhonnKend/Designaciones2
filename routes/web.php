@@ -292,7 +292,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('register_new_student_group','UniversityController@register_new_student_group')->name('register_new_student_group')->middleware('permission:administrar_universidades');
     
-    Route::post('store_students_uni','StudentController@store_students')->name('store_students_uni')->middleware('permission:administrar_universidades');
+    Route::post('store_students_uni','StudentController@store_students_uni')->name('store_students_uni')->middleware('permission:administrar_universidades');
 
 
     Route::post('import-list-excel','StudentController@import_students')->name('users.import.excel');
@@ -308,4 +308,6 @@ Route::middleware(['auth'])->group(function(){
     Route::post('cargar_fechas_periodos','DesignationsController@cargar_fechas_periodos')->name('cargar_fechas_periodos')->middleware('permission:cargar_fechas_periodos');
     Route::post('guardar_fechas_nuevas','DesignationsController@guardar_fechas_nuevas')->name('guardar_fechas_nuevas')->middleware('permission:guardar_fechas_nuevas');
     Route::post('sumar_fechas','DesignationsController@sumar_fechas')->name('sumar_fechas')->middleware('permission:sumar_fechas');
+    //Guardar estudiantes por la cuenta del Administrador
+    Route::post('store_students','StudentController@store_students')->name('store_students')->middleware('permission:store_students');
 });

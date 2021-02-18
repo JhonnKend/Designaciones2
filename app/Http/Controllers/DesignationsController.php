@@ -357,10 +357,11 @@ class DesignationsController extends Controller
         //$carbon = new \Carbon\Carbon();
         
         //$dat = $date->formatLocalized(' jS \\of F Y ');
-        
+        $autoridad = Designacion::autoridades_certificado();
         $dates = Designacion::view_certification($id);
-        $startdate = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->start_date));
-        $enddate = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->end_date));
+        $fechas = Designacion::fechas_inicio_fin($id);
+        $startdate = \Carbon\Carbon::createFromTimeStamp(strtotime($fechas->inicio_rote));
+        $enddate = \Carbon\Carbon::createFromTimeStamp(strtotime($fechas->fin_rote));
         $designate_date = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->designation_date));
         //$sd = $dates->start_date;
         //$date = $carbon->now($sd);
@@ -369,9 +370,9 @@ class DesignationsController extends Controller
         $dat2 = $designate_date->formatLocalized(' %d de %B del %Y');
         //return $sd->formatLocalized(' %d de %B del %Y');
         if($dates->type == 1){
-            return \PDF::loadView('reports.vista-pdf',compact('dates','dat','dat1','dat2'))->setPaper('letter', 'portrait')->stream('certification_student.pdf');
+            return \PDF::loadView('reports.vista-pdf',compact('autoridad','dates','dat','dat1','dat2'))->setPaper('letter', 'portrait')->stream('certification_student.pdf');
         }else{
-            return \PDF::loadView('reports.vista-pdf_institute',compact('dates','dat','dat1','dat2'))->setPaper('letter', 'portrait')->stream('certification_student.pdf');
+            return \PDF::loadView('reports.vista-pdf_institute',compact('autoridad','dates','dat','dat1','dat2'))->setPaper('letter', 'portrait')->stream('certification_student.pdf');
         }
         
         
@@ -381,8 +382,11 @@ class DesignationsController extends Controller
         $pdf = app('dompdf.wrapper');
         $dates = Designacion::view_certification($id);
         $designate_date = \Carbon\Carbon::createFromTimeStamp(strtotime($dates->designation_date));
+        $autoridad = Designacion::autoridades_memorandum();
+        $autoridad1 = Designacion::autoridades_memorandum1();
+        $autoridad2 = Designacion::autoridades_memorandum2();
         $dat2 = $designate_date->formatLocalized(' %d de %B del %Y');
-        return \PDF::loadView('reports.memorandum',compact('dates','dat2'))->setPaper('letter', 'portrait')->stream('memorandum_student.pdf');
+        return \PDF::loadView('reports.memorandum',compact('autoridad1','autoridad2','autoridad','dates','dat2'))->setPaper('letter', 'portrait')->stream('memorandum_student.pdf');
         
     }
     //Function for Initation designate for studens
@@ -674,5 +678,30 @@ class DesignationsController extends Controller
             ->where('enable_periods.id', $request->id_periodo)
             ->update(['inicio_rote' => $request->fecha_inicio,'fin_rote'=>$fecha_fin]);
         return "Las fechas se Actualizaron Correctamente";
+    }
+    //FUNCIONES PARA LA EDICION DE GESTION DE ROTES Y DESIGNACIONES
+    public function create_gestion(){
+        return view('designations.gestion.crear');
+    }
+    public function store_gestion(Request $request){
+        $status = 'success';
+        $conent = 'La Gestion se Registro Correctamente';
+        $request->validate([
+            'gestion' => 'numeric|required|unique:gestion,gestion',
+        ],[
+            'gestion.numeric' => 'Este dato debe ser Numerico',
+            'gestion.required' => 'Este dato no puede estar vacio',
+            'gestion.unique' => 'Este dato ya esta siendo Utilizado',            
+        ]);
+        $gestion = new Gestion();
+        $gestion->gestion = request ('gestion');
+        $gestion->status_gestion = 1;
+        $gestion->user_create = \Auth::user()->id;
+        $gestion->save();
+        return redirect()->route('index_gestion')
+        ->with('info', [ 
+            'status' => $status,
+            'content' => $conent
+        ]);
     }
 }

@@ -41,15 +41,22 @@ class StudentController extends Controller
     }
 
     public function create()
-    {
+    {   
+        $hoy = date('Y/m/d');
+        $periodo_habilitados = \DB::table('enable_periods')
+        ->join('gestion','gestion.id','=','enable_periods.id_gestion')
+        ->join('periods','periods.id','=','enable_periods.id_period')
+        ->where('enable_periods.date_end','>', $hoy)
+        ->where('enable_periods.date_start','<=', $hoy)
+        ->get([
+            'enable_periods.id','enable_periods.date_start','enable_periods.date_end',
+            'gestion.gestion',
+            'periods.period',
+        ]);
          $departments = Departamento::all();
          $casos = Caso::all();
-         return view('students.create', compact('departments', 'casos'));
-
-
+         return view('students.create', compact('departments', 'casos','periodo_habilitados'));
     }
-
-
     public function store_students(Request $request)
     {
         $status = 'success';
@@ -176,14 +183,85 @@ class StudentController extends Controller
                 $new_student->user_create = \Auth::user()->id;
                 $new_student->save();
         }
+		return redirect()->route('index_students')
+            ->with('info', [
+                'status' => $status,
+                'content' => $conent
+            ]); 
+    }
+    public function store_students_uni(Request $request)
+    {
+        $status = 'success';
+        $conent = 'El Estudiante'. $request->name .' fue Registrado Correctamente';
+        $request->validate([
+            'type_uni_inst' => 'required',
+        ],[
+            'type_uni_inst.required' => 'Usted debe seleccionar una Institucion Educativa',
+        ]);
+        $request->validate([
+            'a_paterno' => 'required|alpha',
+            'a_materno' => 'required|alpha',
+            'name_student' => 'required|alpha',
+            'addrees' => 'required',
+            'birth_date' => 'required',
+            'ci' => 'required|unique:student',
+            'email' => 'required',
+            'phone' => 'numeric',
+            'id_department' => 'numeric',
+            'id_province' => 'numeric',
+            'id_municipality' => 'numeric',
+            'id_university' => 'numeric',
+            'id_faculty' => 'numeric',
+            'id_career' => 'numeric',
+            'id_periodo' => 'required',
+        ],[
+            'ci.unique' => 'El numero de carnet ya esta siendo Utilizado',
+            'a_paterno.alpha' => 'El Apellido Paterno debe contener solo Letras',
+            'a_paterno.required' => 'El Apellido Paterno es Obligatorio',
+            'a_materno.alpha' => 'El Apellido Materno debe contener solo Letras',
+            'a_materno.required' => 'El Apellido Materno es Obligatorio',
+            'name_student.alpha' => 'El Nombre Estudiante debe contener solo Letras',
+            'name_student.required' => 'El Nombre Estudiante es Obligatorio',
+            'addrees.required' => 'Debe llenar la direccion del Estudiante',
+            'birth_date.required' => 'Debe llenar este Campo',
+            'ci.required' => 'El Numero de Carnet es Obligatorio',
+            'email.required' => 'El Correo Electronico es Obligatorio',                
+            'phone.numeric' => 'El Telefono debe ser Numerico',
+            'id_department.numeric' => 'Seleccione un Departamento',  
+            'id_province.numeric' => 'Seleccione una Provincia',    
+            'id_municipality.numeric' => 'Seleccione un Municipio',
+            'id_faculty.numeric' => 'Seleccione una Facultad',
+            'id_university.numeric' => 'Seleccione una Universidad',
+            'id_career.numeric' => 'Seleccione una Carrera',
+            'id_periodo.required' => 'Debe seleccionar un Periodo',
+        ]);
+            $type_internship = Carrer::find($request->id_career);
+            $new_student = new Student();
+            $new_student->name = request ('name_student');
+            $new_student->ap_pat = request ('a_paterno');
+            $new_student->ap_mat = request ('a_materno');
+            $new_student->ci = request ('ci');
+            $new_student->exp = request ('exp');
+            $new_student->birth_date = request ('birth_date');
+            $new_student->celular = request ('phone');
+            $new_student->id_date_enabled = request ('id_periodo');
+            $new_student->correo = request ('email');
+            $new_student->direccion = request ('addrees');
+            $new_student->sexo = request ('genero');
+            $new_student->level_ac = $type_internship->type_internation;
+            $new_student->type = true;
+            $new_student->insti_id = 1;
+            $new_student->carrer_id = request ('id_career');
+            $new_student->caso_esp = 1;
+            $new_student->user_create = \Auth::user()->id;
+            $new_student->save();
+        
 		return redirect()->route('register_new_student')
             ->with('info', [
                 'status' => $status,
                 'content' => $conent
-            ]);
-
+        ]); 
     }
-
     public function edit_students(Request $request)
     {        
         $student = (Student::edit_student($request->id));
