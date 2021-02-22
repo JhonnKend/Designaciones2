@@ -1,3 +1,6 @@
+body{
+    background-image: url("img/fondo_img.jpg");
+}
 .my_title{
     margin-top: -1em;
     margin-left: -02%;
@@ -97,4 +100,8 @@
 .img_universidad{
     width: 200px;
     height: 250px;
+}
+.img-fondo{    
+    width: 100%;
+    height: 100%;
 }

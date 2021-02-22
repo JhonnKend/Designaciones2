@@ -228,6 +228,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
 			<div id="global_content">
+        <img class="img-fondo" src="{{ asset('img/fondo_img.jpg') }}" alt="">
 				@if(Auth::user()->type_user === 2)
         @if( session()->has('info'))
         <script>
@@ -291,7 +292,7 @@
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+              <b><a href="https://indrijunanda.gitlab.io/" target="_blank"></a></b>
             </span>
           </div>
         </div>
