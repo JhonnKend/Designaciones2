@@ -445,7 +445,8 @@ class DesignationsController extends Controller
         $lista = Designacion::list_students($request->tipo_internado, $request->gestion, $request->periodo);
         $cantidad_estudiantes = count($lista);
         $datos_enviar = $request->tipo_internado.'/'.$request->gestion.'/'.$request->periodo;
-        return view("designations.designation.lista_estudiantes",compact('lista','tipos_internado','cantidad','cantidad_estudiantes','datos_enviar'));
+        $lista_estudiantes_designados = Designacion::lista_estudiantes_designacion($request->tipo_internado,$request->gestion,$request->periodo);
+        return view("designations.designation.lista_estudiantes",compact('lista_estudiantes_designados','lista','tipos_internado','cantidad','cantidad_estudiantes','datos_enviar'));
     }
     public function sorteo_tentativo(Request $request){        
         $valores = explode("/",$request->datos);

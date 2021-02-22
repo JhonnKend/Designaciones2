@@ -68,9 +68,9 @@ class StudentController extends Controller
         ]);
         if($request->type_uni_inst === 'universidad'){
             $request->validate([
-                'a_paterno' => 'required|alpha',
-                'a_materno' => 'required|alpha',
-                'name_student' => 'required|alpha',
+                'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+                'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+                'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
                 'addrees' => 'required',
                 'birth_date' => 'required',
                 'ci' => 'required|unique:student',
@@ -199,9 +199,9 @@ class StudentController extends Controller
             'type_uni_inst.required' => 'Usted debe seleccionar una Institucion Educativa',
         ]);
         $request->validate([
-            'a_paterno' => 'required|alpha',
-            'a_materno' => 'required|alpha',
-            'name_student' => 'required|alpha',
+            'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+            'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+            'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
             'addrees' => 'required',
             'birth_date' => 'required',
             'ci' => 'required|unique:student',
@@ -216,6 +216,9 @@ class StudentController extends Controller
             'id_periodo' => 'required',
         ],[
             'ci.unique' => 'El numero de carnet ya esta siendo Utilizado',
+            'name_student.max' => 'El nombre estudiante es muy largo',
+            'a_paterno.max' => 'El Apellido Paterno estudiante es muy largo',
+            'a_materno.max' => 'El Apellido Materno estudiante es muy largo',
             'a_paterno.alpha' => 'El Apellido Paterno debe contener solo Letras',
             'a_paterno.required' => 'El Apellido Paterno es Obligatorio',
             'a_materno.alpha' => 'El Apellido Materno debe contener solo Letras',

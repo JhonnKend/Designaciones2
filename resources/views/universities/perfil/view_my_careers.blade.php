@@ -11,7 +11,7 @@
                         <th scope="col">NOMBRE CARRERA</th>
                         <th scope="col">NOMBRE FACULTAD</th>
                         <th scope="col">FECHA REGISTRO</th>
-                        <th scope="col"> ACCION </th>
+                        <!--th scope="col"> ACCION </th-->
                     </tr>
                 </thead>
                 <tbody>
@@ -24,9 +24,9 @@
                     <td>{{$r->name_faculty}}</td>
                     <td>{{$r->created_at}}</td>                    
                     <td>
-                        @can('administrar_universidades')<a href="{{ route('show_universities') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Centro Medico" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                        @can('administrar_universidades')<!--a href="{{ route('show_universities') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Centro Medico" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
                         @can('administrar_universidades')<a href="{{ route('edit_universities') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Centro Medico" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                        @can('administrar_universidades')<a href="{{ route('delete_universities') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Centro Medico" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                        @can('administrar_universidades')<a href="{{ route('delete_universities') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Centro Medico" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a-->@endcan
                     </td>
                     </tr>
                     @empty

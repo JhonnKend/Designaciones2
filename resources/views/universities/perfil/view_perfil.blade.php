@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-5">
-                    <a href="#" class="btn btn btn-success btn-block"><i class="fab fa-edit fa-fw"></i> Editar Datos</a>
+                    <!--a href="#" class="btn btn btn-success btn-block"><i class="fab fa-edit fa-fw"></i> Editar Datos</a-->
                 </div>
                 <div class="col-md-5">
                     <a href="#" class="btn btn btn-info btn-block"><i class="fab fa-edit fa-fw"></i> Cambiar Contraseña</a>
