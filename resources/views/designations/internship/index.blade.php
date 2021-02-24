@@ -22,9 +22,9 @@
                     <td>{{$r->name_type}}</td>
                     <td>{{$r->created_at}}</td>
                     <td>
-                        @can('show_internship_types')<a href="{{ route('show_internship_types') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Tipo Internado" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                        @can('edit_internship_types')<a href="{{ route('edit_internship_types') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Tipo Internado" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                        @can('delete_internship_types')<a href="{{ route('delete_internship_types') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Tipo Internado" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                        @can('tecnico_sedes')<a href="{{ route('show_internship_types') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Tipo Internado" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                        @can('tecnico_sedes')<a href="{{ route('edit_internship_types') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Tipo Internado" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                        @can('tecnico_sedes')<a href="{{ route('delete_internship_types') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Tipo Internado" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                     </td>
                     </tr>
                     @endforeach
@@ -33,11 +33,11 @@
         </div>
         @endslot
         @slot('action')
-            @can('acceso_reportes')
+            @can('tecnico_sedes')
                 <a href="{{ route('export_types_internships_excel') }}" class="btn btn-sm btn-outline-success "> <i class="far fa-file-excel"></i> Generar EXCEL</a> 
                 <a href="{{ route('generate_types_internships_pdf') }}" class="btn btn-sm btn-outline-danger "> <i class="far fa-file-pdf"></i> Generar PDF</a>                 
             @endcan
-            @can('create_internship_types')                
+            @can('tecnico_sedes')                
                 <a href="{{ route('create_internship_types') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Tipo</a> 
             @endcan
         @endslot

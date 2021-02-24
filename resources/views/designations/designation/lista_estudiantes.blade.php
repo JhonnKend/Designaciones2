@@ -57,10 +57,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 align-content-center">
+                <div class="col-md-12 align-content-center">
                     @if(isset($lista[0]->id_d))
                         @if($lista[0]->confirmado == "si")
-                            <button type="button" class="btn btn-primary"> Ver Lista de Designaciones</button>
+                            <!--button type="button" class="btn btn-primary"> Ver Lista de Designaciones</button-->
+                            <div class="alert alert-success" role="alert">
+                                Ya se Realizo el Sorteo para esta Gestion y Periodo. Ingrese a: Ver Designaciones
+                            </div>
                         @else
                             <button type="button" class="btn btn-danger confirmar_sorteo">Confirmar Sorteo</button>
                         @endif
@@ -73,7 +76,7 @@
     </div>
 @endslot
 @slot('action')
-    @can('create_internship_types')
+    @can('tecnico_sedes')
         <!--a href="{{ route('create_internship_types') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Tipo</a--> 
     @endcan
 @endslot

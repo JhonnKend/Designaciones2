@@ -108,7 +108,7 @@
     </form>
 @endslot
 @slot('action')
-    @can('index_internship_draw')
+    @can('tecnico_sedes')
         <button href="{{ route('index_internship_draw') }}" class="btn btn-sm btn-outline-success button_back float-right"> <i class="fas fa-arrow-left"></i> Atras </button>
     @endcan
 @endslot

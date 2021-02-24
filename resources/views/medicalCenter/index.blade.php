@@ -23,9 +23,9 @@
                     <td>{{$r->created_at}}</td>
                     <td>{{$r->name_municipality}}</td>
                     <td>
-                        @can('show_medicalCenter')<a href="{{ route('show_medicalCenter') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Centro Medico" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                        @can('edit_medicalCenter')<a href="{{ route('edit_medicalCenter') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Centro Medico" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                        @can('delete_medicalCenter')<a href="{{ route('delete_medicalCenter') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Centro Medico" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('show_medicalCenter') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Centro Medico" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('edit_medicalCenter') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Centro Medico" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('delete_medicalCenter') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Centro Medico" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                     </td>
                     </tr>
                     @empty
@@ -40,7 +40,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_medicalCenter')
+            @can('administrar_sistema')
                 <a href="{{ route('create_medicalCenter') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Centro Medico</a> 
             @endcan
         @endslot

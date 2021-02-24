@@ -16,7 +16,7 @@
           <span>Panel de Control</span></a>
       </li>
 	  <hr class="sidebar-divider">
-	  @can('index_configurations')
+	  @can('administrar_sistema')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
           aria-expanded="true" aria-controls="collapseBootstrap">
@@ -33,7 +33,7 @@
         </div>
 	  </li>
 	  @endcan
-	  @can('index_medicalCenter')
+	  @can('administrar_sistema')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
@@ -47,7 +47,7 @@
         </div>
 	  </li>
 	  @endcan
-	  @can('index_universities')
+	  @can('administrar_sistema')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUni" aria-expanded="true"
           aria-controls="collapseUni">
@@ -63,7 +63,7 @@
         </div>
 	  </li>
 	  @endcan
-	  @can('index_institutes')
+	  @can('administrar_sistema')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInst" aria-expanded="true"
           aria-controls="collapseInst">
@@ -78,7 +78,7 @@
         </div>
 	  </li>
 	  @endcan
-	  @can('index_students')
+	  @can('tecnico_sedes')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
@@ -92,7 +92,7 @@
         </div>
 	  </li>
     @endcan
-    @can('index_designations')
+    @can('tecnico_sedes')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_designations" aria-expanded="true"
           aria-controls="collapse_designations">
@@ -109,7 +109,7 @@
         </div>
 	  </li>
 	  @endcan
-    @can('designation')
+    @can('tecnico_sedes')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_designation" aria-expanded="true"
           aria-controls="collapse_designation">
@@ -125,7 +125,7 @@
         </div>
       </li>
     @endcan
-	  @can('index_users')
+	  @can('administrar_sistema')
 	  <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage_user" aria-expanded="true"
           aria-controls="collapsePage_user">
@@ -169,7 +169,7 @@
       </div>
   </li>
 	  @endcan     
-	  @can('index_roles')
+	  @can('administrar_sistema')
 	  <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage_roles" aria-expanded="true"
           aria-controls="collapsePage_roles">

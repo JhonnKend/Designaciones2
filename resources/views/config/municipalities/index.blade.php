@@ -23,9 +23,9 @@
                     <td>{{$r->created_at}}</td>
                     <td>{{$r->name_province}}</td>
                     <td>
-                        @can('show_municipalities')<a href="{{ route('show_municipalities') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Municipio" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                        @can('edit_municipalities')<a href="{{ route('edit_municipalities') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Municipio" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                        @can('delete_municipalities')<a href="{{ route('delete_municipalities') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Municipio" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('show_municipalities') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Municipio" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('edit_municipalities') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Municipio" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('delete_municipalities') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Municipio" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                     </td>
                     </tr>
                     @endforeach
@@ -34,7 +34,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_municipalities')
+            @can('administrar_sistema')
             <a href="{{ route('create_municipalities') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nuevo Municipio</a> 
             @endcan
         @endslot

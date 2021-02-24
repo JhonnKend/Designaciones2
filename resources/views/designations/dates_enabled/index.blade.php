@@ -31,9 +31,9 @@
                             <td>{{ $r->date_start }}</td>
                             <td>{{ $r->date_end }}</td>
                             <td>
-                                @can('show_periods')<!--a href="{{ route('show_periods') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Detalles" data-original-title="More Color"> <i class="far fa-eye"></i> </a-->@endcan
-                                @can('edit_periods')<a href="{{ route('edit_date_enabled') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Modificar Fechas" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                                @can('delete_periods')<a href="{{ route('delete_date_enabled') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Fecha" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                                @can('tecnico_sedes')<!--a href="{{ route('show_periods') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Detalles" data-original-title="More Color"> <i class="far fa-eye"></i> </a-->@endcan
+                                @can('tecnico_sedes')<a href="{{ route('edit_date_enabled') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Modificar Fechas" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                                @can('tecnico_sedes')<a href="{{ route('delete_date_enabled') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Fecha" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                             </td>
                         </tr>
                     @endforeach
@@ -42,7 +42,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_enable_periods')
+            @can('tecnico_sedes')
                 <a href="{{ route('create_enable_periods') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nuevo Periodo de Registro</a> 
             @endcan
         @endslot

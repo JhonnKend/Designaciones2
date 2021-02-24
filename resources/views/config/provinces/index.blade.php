@@ -23,9 +23,9 @@
                     <td>{{$r->created_at}}</td>
                     <td>{{$r->name_department}}</td>
                     <td>
-                        @can('show_provinces')<a href="{{ route('show_provinces') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Departamento" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                        @can('edit_provinces')<a href="{{ route('edit_provinces') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Departamento" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                        @can('delete_provinces')<a href="{{ route('delete_provinces') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Departamento" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('show_provinces') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Departamento" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('edit_provinces') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Departamento" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                        @can('administrar_sistema')<a href="{{ route('delete_provinces') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Departamento" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                     </td>
                     </tr>
                     @endforeach
@@ -34,7 +34,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_provinces')
+            @can('administrar_sistema')
             <a href="{{ route('create_provinces') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nueva Provincia</a> 
             @endcan
         @endslot

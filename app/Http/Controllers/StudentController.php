@@ -68,9 +68,9 @@ class StudentController extends Controller
         ]);
         if($request->type_uni_inst === 'universidad'){
             $request->validate([
-                'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
-                'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
-                'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+                'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
+                'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
+                'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
                 'addrees' => 'required',
                 'birth_date' => 'required',
                 'ci' => 'required|unique:student',
@@ -199,9 +199,9 @@ class StudentController extends Controller
             'type_uni_inst.required' => 'Usted debe seleccionar una Institucion Educativa',
         ]);
         $request->validate([
-            'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
-            'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
-            'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:5',
+            'a_paterno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
+            'a_materno' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
+            'name_student' => 'required|regex:/^[\pL\s\-]+$/u|max:25|min:3',
             'addrees' => 'required',
             'birth_date' => 'required',
             'ci' => 'required|unique:student',

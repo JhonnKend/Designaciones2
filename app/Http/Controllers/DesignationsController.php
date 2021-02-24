@@ -332,7 +332,7 @@ class DesignationsController extends Controller
         return view('designations.internship_draw.index',compact('tipos_internado','gestion','periodo'))->with('info', [
             'status' => $status,
             'content' => $conent
-        ]);;
+        ]);
     }
     public function list_student_institute(){
         $list_students = Designacion::internship_draw_list_insti_1();
@@ -476,7 +476,7 @@ class DesignationsController extends Controller
         $lista_estudiantes_sorteo = DEsignacion::lista_sorteada($valores[0], $valores[1], $valores[2]);
         return view('designations.designation.ver_para_confirmacion_sorteo',compact('datos_enviar','lista_estudiantes_sorteo','cantidad_estudiantes','tipos_internado','cantidad'));
     }
-    public function confirmar_sorteo_ruta(Request $request){        
+    public function confirmar_sorteo_ruta(Request $request){                
         $valores = explode("/",$request->datos);
         \DB::table('quotas')
             ->where('quotas.tipe_internship', $valores[0])
@@ -658,13 +658,18 @@ class DesignationsController extends Controller
         return view('designations.designation.cargar_lista_editar_designacion',compact('cupos_disponibles'));
     }
     public function guardar_nueva_designacion(Request $request){
-        $datos_estudiante = Designacion::buscar_cupos($request->id_cupo);
+        $datos_estudiantes = Designacion::buscar_cupos($request->id_cupo);
         \DB::table('quotas')
             ->where('quotas.id', $request->id_cupo)
             ->update(['confirmado' => NULL,'id_student'=>NULL,'status_designation'=>0]);
         \DB::table('quotas')
             ->where('quotas.id', $request->cupo_disponible)
-            ->update(['confirmado' => 'si','id_student'=>$datos_estudiante[0]->id_student,'status_designation'=>1,'user_edit'=>\Auth::user()->id]);
+            ->update(['confirmado' => 'si','id_student'=>$datos_estudiantes[0]->id_student,'status_designation'=>1,'user_edit'=>\Auth::user()->id]);
+        $datos_estudiante = Designacion::student_view($datos_estudiantes[0]->id_student);
+        $lugar_estudio = Student::ver_lugar_estudio($datos_estudiantes[0]->id_student);
+        $centro_salud = EstableSalud::lugar_designado($datos_estudiantes[0]->id_student);
+        $datos_enviar = $centro_salud->tipe_internship.'/'.$centro_salud->gestion.'/'.$centro_salud->periodo;
+        return view('designations.designation.ver_designacion',compact('datos_enviar','datos_estudiante','lugar_estudio','centro_salud'));
     }
     //funcion para cargar fechas de los periodos para su edicion.
     public function cargar_fechas_periodos(Request $request){

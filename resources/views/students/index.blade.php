@@ -23,9 +23,9 @@
 						<td>{{$student->ci}}</td>
 						<td>{{$student->created_at}}</td>
 						<td>
-							@can('show_students')<a href="{{ route('show_students') }}" class="btn btn-success btn-sm show_function" value="{{ $student->id }}" title="Ver Estudiante" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-							@can('edit_students')<a href="{{ route('edit_students') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $student->id }}" title="Editar Estudiante" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-							@can('delete_students')<a href="{{ route('delete_students') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $student->id }}" title="Borrar Estudiante" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+							@can('tecnico_sedes')<a href="{{ route('show_students') }}" class="btn btn-success btn-sm show_function" value="{{ $student->id }}" title="Ver Estudiante" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+							@can('tecnico_sedes')<a href="{{ route('edit_students') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $student->id }}" title="Editar Estudiante" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+							@can('tecnico_sedes')<a href="{{ route('delete_students') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $student->id }}" title="Borrar Estudiante" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
 						</td>
 						</tr>
 					@endforeach
@@ -34,7 +34,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_students')
+            @can('tecnico_sedes')
             <a href="{{ route('export_students_excel') }}" class="btn btn-sm btn-outline-success "> <i class="far fa-file-excel"></i> Generar EXCEL</a> 
             <a href="{{ route('generate_students_pdf') }}" class="btn btn-sm btn-outline-danger "> <i class="far fa-file-pdf"></i> Generar PDF</a> 
             <a href="{{ route('create_students') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nuevo Estudiante</a> 

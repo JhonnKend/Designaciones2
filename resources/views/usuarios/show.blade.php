@@ -47,7 +47,7 @@
 	</div>
 	@endslot
 	@slot('action')
-		@can('index_users')
+		@can('administrar_sistema')
 			<button href="{{ route('index_users') }}" class="btn btn-sm btn-outline-success button_back float-right"> <i class="fas fa-arrow-left"></i> Atras </button>
 		@endcan
 	@endslot

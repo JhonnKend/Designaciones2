@@ -19,4 +19,5 @@
     <script src="{{ mix('js/vendor.js') }}"></script>
     <script src="{{ asset('js/select.js') }}" ></script>
     <script src="{{ asset('js/xlsx.js') }}" ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </html>

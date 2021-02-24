@@ -143,19 +143,41 @@ $(function(){
         	}
         })
     });
-    $(document).on('click','.confirmar_sorteo',function(e){
+    $(document).on('click','.confirmar_sorteo',function(e){        
         e.preventDefault(e)
-        $.ajax({
-        	type:'POST',
-        	url:'confirmar_sorteo_ruta',
-        	data:{datos:$('input[name=datos').val(),_token:$('meta[name="csrf-token"]').attr('content')},
-        	success:function(data){
-                $("#global_content").html(data)
-                return false;
-        	},
-        	error:function(data){
-        	}
-        })
+        Swal.fire({
+            title: 'Esta Seguro?',
+            text: "Se confirmara la Designacion!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Confirmar!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type:'POST',
+                    url:'confirmar_sorteo_ruta',
+                    data:{datos:$('input[name=datos').val(),_token:$('meta[name="csrf-token"]').attr('content')},
+                    success:function(data){
+                        $("#global_content").html(data)
+                        Swal.fire(
+                            'Correcto!',
+                            'Se Confirmo la Designacion Correctamente.',
+                            'success'
+                          )
+                        return false;
+                    },
+                    error:function(data){
+                    }
+                })
+              Swal.fire(
+                'Cancelado!',
+                'No se guardo ninguna Designacion.',
+                'success'
+              )
+            }
+        })        
     });
     $(document).on('change','.load_medical_center_qoutas',function(e){
         $('#medical_center option').remove();
@@ -370,19 +392,36 @@ $(function(){
         	}
         })
     });
-    $(document).on('click','.delete_function',function(e){
+    $(document).on('click','.delete_function',function(e){  
         e.preventDefault(e)
-        $.ajax({
-        	type:'POST',
-        	url:$(this).attr('href'),
-        	data:{id:$(this).attr('value'),_token:$('meta[name="csrf-token"]').attr('content')},
-        	success:function(data){
-                $("#global_content").html(data)
-                return false;
-        	},
-        	error:function(data){
-        	}
-        })
+        Swal.fire({
+            title: 'Esta Seguro?',
+            text: "Se Eliminara este dato!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Borrar!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type:'POST',
+                    url:$(this).attr('href'),
+                    data:{id:$(this).attr('value'),_token:$('meta[name="csrf-token"]').attr('content')},
+                    success:function(data){
+                        $("#global_content").html(data)
+                        return false;
+                    },
+                    error:function(data){
+                    }
+                })
+              Swal.fire(
+                'Borrado!',
+                'Se elimino Correctamente.',
+                'success'
+              )
+            }
+          })
     });
     $(document).on('submit','.save_date',function(e){
         var formData = new FormData($(this)[0]);

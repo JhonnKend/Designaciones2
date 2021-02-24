@@ -1,6 +1,6 @@
 @component('components.index_card')
     @slot('title')
-        Lista de Alumnos Universitarios Desigandos asd 
+        Lista de Alumnos Universitarios Desigandos
     @endslot    
     @slot('bodycard')
     <form action="{{ route('ver_lista_designaciones_') }}" method="POST" class="cargar_listas">
@@ -62,11 +62,10 @@
         </div>
         @endslot
         @slot('action')
-            @can('acceso_reportes')
-                <a href="{{ route('export_designations_excel') }}" class="btn btn-sm btn-outline-success "> <i class="far fa-file-excel"></i> Generar EXCEL</a> 
-                <a href="{{ route('generate_designations_pdf') }}" class="btn btn-sm btn-outline-danger "> <i class="far fa-file-pdf"></i> Generar PDF</a>                 
+            @can('tecnico_sedes')
+                
             @endcan
-            @can('create_internship_types')
+            @can('tecnico_sedes')
                 <!--a href="{{ route('create_internship_types') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Agregar Nuevo Tipo</a--> 
             @endcan
         @endslot

@@ -131,7 +131,7 @@
     .footer_firm{
         text-align: center;
         margin-top: 100px;
-        padding-top: 100px; 
+        padding-top: 30px; 
     }
     .footer_firm2{
         text-align: center;  

@@ -21,9 +21,9 @@
                             <td>{{$r->name}}</td>
                             <td>{{$r->created_at}}</td>
                             <td>
-                                @can('show_roles')<a href="{{ route('show_role') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Rol" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                                @can('edit_roles')<a href="{{ route('edit_role') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Rol" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
-                                @can('delete_roles')<a href="{{ route('delete_role') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Rol" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                                @can('administrar_sistema')<a href="{{ route('show_role') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Rol" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                                @can('administrar_sistema')<a href="{{ route('edit_role') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Rol" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a>@endcan
+                                @can('administrar_sistema')<a href="{{ route('delete_role') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Rol" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                             </td>
                         </tr>
                     @endforeach
@@ -32,11 +32,22 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_roles')
+            @can('administrar_sistema')
             <a href="{{ route('create_roles') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nuevo Rol</a> 
             @endcan
         @endslot
 @endcomponent
+@if( session()->has('info'))
+<script>
+$(function(){        
+    toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    }
+    toastr.{{ session('info')['status'] }}('{{ session("info")["content"] }}');
+})
+</script>
+@endif
 <script>
     $(document).ready(function() {
     $('#example').DataTable({
@@ -50,7 +61,7 @@
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
             "search": "Buscar por:",
-            "zeroRecords": "Sin resultados encontrados",
+            "zeroRecords": "Sin resultados encontradoss",
             "paginate": {
                 "first": "Primero",
                 "last": "Ultimo",

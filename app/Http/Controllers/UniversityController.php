@@ -32,6 +32,8 @@ class UniversityController extends Controller
 		return view('universities.create',compact('departments'));
     }
     public function store_universities(Request $request){
+        $status = 'success';
+        $content = 'Se registro Correctamente';
         $request->validate([
 			'id_department' => 'numeric',
 			'id_province' => 'numeric',
@@ -57,8 +59,11 @@ class UniversityController extends Controller
         $usuario->id_universidad = $ultimo->id;
         $usuario->password = bcrypt('password');
         $usuario->save();
-        return redirect()->route('create_universities', $univercity->id)
-            ->with('info', 'Rol registrado con  éxito');
+        return redirect()->route('index_universities')
+        ->with('info', [
+            'status' => $status,
+            'content' => $content
+        ]);
     }
     public function edit_universities(Request $request){
         $univercity_edit = Univeridad::find_edit_university($request->id);
@@ -106,6 +111,8 @@ class UniversityController extends Controller
         return view('universities.faculties.create',compact('departments'));
     }
     public function store_faculties(Request $request){
+        $status = 'success';
+        $content = 'Se registro Correctamente';
         $validator = $request->validate([
 			'id_department' => 'numeric',
 			'id_province' => 'numeric',
@@ -127,8 +134,11 @@ class UniversityController extends Controller
 		$faculty->id_university = $request->id_university;
         $faculty->user_create = \Auth::user()->id;
         $faculty->save();
-        return redirect()->route('create_faculties', $faculty->id)
-            ->with('info', 'Faculta Registrada con  éxito');
+        return redirect()->route('index_faculties')
+        ->with('info', [
+            'status' => $status,
+            'content' => $content
+        ]);
     }
     public function edit_faculties(Request $request){
         $faculty_edit = Faculty::find_edit_faculty($request->id);
@@ -182,6 +192,8 @@ class UniversityController extends Controller
         return view('universities.careers.create',compact('departments','types_internations'));
     }
     public function store_careers(Request $request){
+        $status = 'success';
+        $content = 'Se registro Correctamente';
         $request->validate([
 			'id_department' => 'numeric',
 			'id_province' => 'numeric',
@@ -205,8 +217,11 @@ class UniversityController extends Controller
 		$career->faculty_id = $request->id_faculty;
         $career->user_create = \Auth::user()->id;
         $career->save();
-        return redirect()->route('create_careers', $career->id)
-            ->with('info', 'Carrera Registrada con  éxito');
+        return redirect()->route('index_careers')
+        ->with('info', [
+            'status' => $status,
+            'content' => $content
+        ]);
     }
     public function show_careers(Request $request){
         $career = Carrer::show_career($request->id);

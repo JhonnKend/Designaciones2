@@ -9,21 +9,30 @@
 				@csrf
 				<div class="form-group">
 					<label for="name">NOMBRE</label>
-					<small class="text-red" id=""></small>
-					<input type="text" class="form-control name_form" name="name" placeholder="Ingrese su Nombre">
+					<small class="text-danger" id=""></small>
+					<input type="text" class="form-control name_form change_select" name="name" placeholder="Ingrese su Nombre">
 				</div>
 				<div class="form-group">
 					<label for="email">EMAIL</label>
-					<small class="text-red" id=""></small>
-					<input type="email" class="form-control name_form" name="email" placeholder="Ingrese su Email">
+					<small class="text-danger" id=""></small>
+					<input type="email" class="form-control name_form change_select" name="email" placeholder="Ingrese su Email">
 				</div>
 				<div class="form-group">
 					<label for="password">CONTRASEÑA</label>
-					<small class="text-red" id=""></small>
-					<input type="password" class="form-control name_form" name="password" placeholder="Password">
+					<small class="text-danger" id=""></small>
+					<input type="password" class="form-control name_form change_select" name="password" placeholder="Password">
 				</div>  
 			</div>
 			<div class="col-md-6">
+				<div class="form-group">
+					<label for="name">TIPO USUARIO</label>
+					<small class="text-danger" id=""></small>
+					<select type="text" class="form-control name_form select2bs4 change_select" name="tipo_usuario">
+						<option value="">Seleccione el Tipo de Usuario</option>
+						<option value="0">Administrador</option>
+						<option value="3">Tecnico SEDES(Doctor)</option>
+					</select>
+				</div>
 				<label for="text"> ROLES PARA ASIGNAR</label>
 				<div class="form-group">
 				<ul class="list-unstyled">
@@ -47,7 +56,7 @@
 	</form>	
 	@endslot
 	@slot('action')
-		@can('index_users')
+		@can('administrar_sistema')
 			<button href="{{ route('index_users') }}" class="btn btn-sm btn-outline-success button_back float-right"> <i class="fas fa-arrow-left"></i> Atras </button>
 		@endcan
 	@endslot

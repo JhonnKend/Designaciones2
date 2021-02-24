@@ -38,22 +38,31 @@ class UserController extends Controller
 
     //ALmancena los registros recien creados de create en la BD
     public function store(Request $request)
-    {   
+    { 
+        $status = 'success';
+        $content = 'Usuario Registrado Correctamente';    
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users',       
             'password' => 'required',  
+            'tipo_usuario' => 'numeric',
         ],[
             'name.required' => 'El campo Nombre es requerido',
-            'password.required' => 'El campo Contraseña es requerido'
+            'password.required' => 'El campo Contraseña es requerido',
+            'tipo_usuario.numeric' => 'Seleccione un tipo de Usuario',
         ]);
         $usuario = new User();
         $usuario->name = request ('name');
         $usuario->email = request ('email');
+        $usuario->type_user = request ('tipo_usuario');
+        $usuario->id_universidad = 0;
         $usuario->password = bcrypt(request ('password'));
         $usuario->save();
         $usuario->roles()->sync($request->get('roles'));
-        return redirect()->route('index_users', $usuario->id)->with('info', 'Rol registrado con  éxito'); 
+        return redirect()->route('index_users', $usuario->id)->with('info', [
+            'status' => $status,
+            'content' => $content
+        ]); 
     }
 
     //Mostramos un registro especifico
@@ -87,8 +96,13 @@ class UserController extends Controller
     //Elimina un registro especifico de la BD
     public function delete(Request $request)
     {
+        $status = 'error';
+        $content = 'Usuario Eliminado Correctamente';    
         $usuario =  User::findOrFail($request->id);
         $usuario->delete();
-        return redirect()->route('index_users', $usuario->id)->with('info', 'Rol registrado con  éxito');
+        return redirect()->route('index_users', $usuario->id)->with('info', [
+            'status' => $status,
+            'content' => $content
+        ]);
     }
 }

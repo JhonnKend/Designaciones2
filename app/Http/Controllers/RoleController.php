@@ -39,10 +39,15 @@ class RoleController extends Controller
         return view('roles.edit', compact('role','permissions'));
     }
     public function update(Request $request,Role $role){
+        $status = 'success';
+        $content = 'El rol se Actualizo Correctamente';
         $role->update($request->all());
         $role->permissions()->sync($request->get('permissions'));
         return redirect()->route('index_roles', $role->id)
-            ->with('info', 'Rol Actualizado con exito actualizado con éxito');
+            ->with('info', [ 
+                'status' => $status,
+                'content' => $content
+            ]);
     }
     public function show(Request $request){
         $role = Roles::select_one_role_view($request->id);

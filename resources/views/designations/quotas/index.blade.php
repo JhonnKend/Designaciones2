@@ -41,9 +41,9 @@
         </div>
         @endslot
         @slot('action')
-            @can('acceso_reportes')                
+            @can('tecnico_sedes')                
             @endcan
-            @can('create_quotas')
+            @can('tecnico_sedes')
                 <a href="{{ route('create_quotas') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Cupos</a> 
             @endcan
         @endslot

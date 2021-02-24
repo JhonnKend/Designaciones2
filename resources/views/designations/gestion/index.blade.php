@@ -27,9 +27,9 @@
                             @endif
                             <td>{{ $r->created_at }}</td>                            
                             <td>
-                                @can('show_gestion')<a href="{{ route('show_gestion') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Detalles" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
-                                @can('edit_gestion')<!--a href="{{ route('edit_gestion') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Tipo Internado" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a-->@endcan
-                                @can('delete_gestion')<a href="{{ route('delete_gestion') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Detalles" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
+                                @can('tecnico_sedes')<a href="{{ route('show_gestion') }}" class="btn btn-success btn-sm show_function" value="{{ $r->id }}" title="Ver Detalles" data-original-title="More Color"> <i class="far fa-eye"></i> </a>@endcan
+                                @can('tecnico_sedes')<!--a href="{{ route('edit_gestion') }}" class="btn btn-primary btn-sm edit_function"  value="{{ $r->id }}" title="Editar Tipo Internado" data-original-title="More Color"> <i class="fas far fa-edit"></i> </a-->@endcan
+                                @can('tecnico_sedes')<a href="{{ route('delete_gestion') }}" class="btn btn-danger btn-sm delete_function"  value="{{ $r->id }}" title="Borrar Detalles" data-original-title="More Color"> <i class="fas fa-trash-alt"></i> </a>@endcan
                             </td>
                         </tr>
                     @endforeach
@@ -38,7 +38,7 @@
         </div>
         @endslot
         @slot('action')
-            @can('create_gestion')
+            @can('tecnico_sedes')
                 <a href="{{ route('create_gestion') }}" class="btn btn-sm btn-outline-primary click_charge_button"> <i class="fas fa-plus-circle"></i> Registrar Nuevo Gestion</a> 
             @endcan
         @endslot
